@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  sweat-social
-//
-//  Created by Hagen Zhang on 11/15/24.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
