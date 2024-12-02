@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Alamofire
 
 class DisplayViewController: UIViewController {
 
@@ -28,15 +28,13 @@ class DisplayViewController: UIViewController {
         title = "Post Details"
         
         fetchImage(from: receivedPost.image) { image in
-            DispatchQueue.main.async {
-                if let image = image {
-                    self.displayView.totalTimeValueLabel.text = "\(self.receivedPost.hours) hours \(self.receivedPost.mins) mins"
-                    self.displayView.locationValueLabel.text = self.receivedPost.loc
-                    self.displayView.messageValueLabel.text = self.receivedPost.message
-                    self.displayView.avatarImg.image = image
-                } else {
-                    print("Failed to fetch the image.")
-                }
+            if let image = image {
+                self.displayView.totalTimeValueLabel.text = "\(self.receivedPost.hours) hours \(self.receivedPost.mins) mins"
+                self.displayView.locationValueLabel.text = self.receivedPost.loc
+                self.displayView.messageValueLabel.text = self.receivedPost.message
+                self.displayView.avatarImg.image = image
+            } else {
+                print("Failed to fetch the image.")
             }
         }
     }
@@ -48,21 +46,20 @@ class DisplayViewController: UIViewController {
             return
         }
         
-        URLSession.shared.dataTask(with: imageUrl) { data, response, error in
-            if let error = error {
-                print("Error fetching image: \(error)")
+        AF.request(imageUrl).responseData { response in
+            switch response.result {
+            case .success(let data):
+                if let image = UIImage(data: data) {
+                    completion(image)
+                } else {
+                    print("Failed to decode image data.")
+                    completion(nil)
+                }
+            case .failure(let error):
+                print("Error fetching image: \(error.localizedDescription)")
                 completion(nil)
-                return
             }
-            
-            guard let data = data, let image = UIImage(data: data) else {
-                print("Failed to decode image data.")
-                completion(nil)
-                return
-            }
-            
-            completion(image)
-        }.resume()
+        }
     }
 
 }

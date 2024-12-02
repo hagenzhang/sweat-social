@@ -8,7 +8,7 @@ class CreateView: UIView, UITextViewDelegate {
     let minutesTextField = UITextField()
     let locationLabel = UILabel()
     let locationTextField = UITextField()
-    let placeholderText = "Enter details here..."
+    let placeholderText = "Enter details here (Optional)"
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,7 +60,7 @@ class CreateView: UIView, UITextViewDelegate {
         self.addSubview(locationLabel)
 
         // Configure Location Text Field
-        locationTextField.placeholder = "Enter location"
+        locationTextField.placeholder = "Enter location (Optional)"
         locationTextField.borderStyle = .roundedRect
         locationTextField.font = UIFont.systemFont(ofSize: 16)
         locationTextField.translatesAutoresizingMaskIntoConstraints = false

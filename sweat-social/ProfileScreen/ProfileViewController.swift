@@ -1,6 +1,7 @@
 import UIKit
 import Cloudinary
 import FirebaseFirestore
+import Alamofire
 
 
 
@@ -42,22 +43,21 @@ class ProfileViewController: UIViewController {
         let unwrappedEmail = receivedPackage.email
         let unwrappedFollowing = receivedPackage.following
         fetchImage(from: receivedPackage.image) { image in
-            DispatchQueue.main.async {
-                if let image = image {
-                    self.profileScreen.avatarImg.image = image
-                    self.profileScreen.labelName.text = "\(unwrappedName)"
-                    self.profileScreen.labelName.font = UIFont.boldSystemFont(ofSize: 24)
-                    self.profileScreen.labelEmail.text = "Email: \(unwrappedEmail)"
-                    self.profileScreen.labelName.font = UIFont.systemFont(ofSize: 20)
-                    self.profileScreen.labelFollowing.text = "Following: \(unwrappedFollowing)"
-                    self.profileScreen.labelFollowing.font = UIFont.systemFont(ofSize: 16)
+            if let image = image {
+                self.profileScreen.avatarImg.image = image
+                self.profileScreen.labelName.text = "\(unwrappedName)"
+                self.profileScreen.labelName.font = UIFont.boldSystemFont(ofSize: 24)
+                self.profileScreen.labelEmail.text = "Email: \(unwrappedEmail)"
+                self.profileScreen.labelName.font = UIFont.systemFont(ofSize: 20)
+                self.profileScreen.labelFollowing.text = "Following: \(unwrappedFollowing)"
+                self.profileScreen.labelFollowing.font = UIFont.systemFont(ofSize: 16)
 
 
-                } else {
-                    print("Failed to fetch the image.")
-                }
+            } else {
+                print("Failed to fetch the image.")
             }
         }
+        
 
     }
     
@@ -94,21 +94,16 @@ class ProfileViewController: UIViewController {
             return
         }
         
-        URLSession.shared.dataTask(with: imageUrl) { data, response, error in
-            if let error = error {
-                print("Error fetching image: \(error)")
+        AF.request(imageUrl).responseData { response in
+            switch response.result {
+            case .success(let data):
+                let image = UIImage(data: data)
+                completion(image)
+            case .failure(let error):
+                print("Error fetching image: \(error.localizedDescription)")
                 completion(nil)
-                return
             }
-            
-            guard let data = data, let image = UIImage(data: data) else {
-                print("Failed to decode image data.")
-                completion(nil)
-                return
-            }
-            
-            completion(image)
-        }.resume()
+        }
     }
 }
 
@@ -120,14 +115,12 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! ProfileViewCell
         fetchImage(from: posts[indexPath.row].image) { image in
-            DispatchQueue.main.async {
-                if let image = image {
-                    cell.labelTime.text = self.posts[indexPath.row].hours + " hours " + self.posts[indexPath.row].mins + " mins"
-                    cell.labelLocation.text = self.posts[indexPath.row].loc
-                    cell.cellImg.image = image
-                } else {
-                    print("Failed to fetch the image.")
-                }
+            if let image = image {
+                cell.labelTime.text = self.posts[indexPath.row].hours + " hours " + self.posts[indexPath.row].mins + " mins"
+                cell.labelLocation.text = self.posts[indexPath.row].loc
+                cell.cellImg.image = image
+            } else {
+                print("Failed to fetch the image.")
             }
         }
         return cell

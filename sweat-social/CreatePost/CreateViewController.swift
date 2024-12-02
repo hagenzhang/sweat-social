@@ -19,6 +19,12 @@ class CreateViewController: UIViewController {
         view.backgroundColor = .white
         title = "Create Post"
         
+        //MARK: recognizing the taps on the app screen, not the keyboard...
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardOnTap))
+        tapRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapRecognizer)
+        
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save, target: self,
             action: #selector(saveNoteTapped)
@@ -29,20 +35,48 @@ class CreateViewController: UIViewController {
         
         createView.selectPic.menu = getMenuImagePicker()
     }
+    
+    //MARK: Hide Keyboard...
+    @objc func hideKeyboardOnTap(){
+        //MARK: removing the keyboard from screen...
+        view.endEditing(true)
+    }
 
     @objc func saveNoteTapped() {
-        guard let hours = createView.hoursTextField.text, !hours.isEmpty else {
+        guard var hours = createView.hoursTextField.text, !hours.isEmpty else {
+            let alert = UIAlertController(title: "Text Error", message: "Please enter hours.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             return
         }
-        guard let mins = createView.minutesTextField.text, !mins.isEmpty else {
+        guard var mins = createView.minutesTextField.text, !mins.isEmpty else {
+            let alert = UIAlertController(title: "Text Error", message: "Please enter minutes.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             return
         }
-        guard let loc = createView.locationTextField.text, !loc.isEmpty else {
-            return
+        
+        if Int(mins)! > 59 {
+            var tempMins = Int(mins)!
+            var tempHours = Int(hours)!
+            
+            tempHours += Int(floor(Double(tempMins) / 60.0))
+            tempMins = (tempMins % 60)
+            
+            hours = String(tempHours)
+            mins = String(tempMins)
         }
-        guard let details = createView.createView.text, !details.isEmpty, details != "Enter details here..." else {
-            return
+        
+        var loc = (createView.locationTextField.text)!
+        if loc.isEmpty {
+            loc = ""
         }
+        
+        var details = (createView.createView.text)!
+        if details.isEmpty || details == "Enter details here (Optional)"{
+            details = ""
+        }
+        
         let curDT = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
