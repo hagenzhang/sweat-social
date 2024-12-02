@@ -79,26 +79,22 @@ class DisplayView: UIView {
 
     func initConstraints() {
         NSLayoutConstraint.activate([
-            // ScrollView Constraints
             scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             
-            // ContentView Constraints
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor), // Ensures vertical scrolling
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            // Avatar Image Constraints
             avatarImg.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32),
             avatarImg.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             avatarImg.heightAnchor.constraint(equalToConstant: 200),
             avatarImg.widthAnchor.constraint(equalToConstant: 200),
 
-            // Total Time Row Constraints
             totalTimeLabel.topAnchor.constraint(equalTo: avatarImg.bottomAnchor, constant: 16),
             totalTimeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             totalTimeLabel.widthAnchor.constraint(equalToConstant: 100),
@@ -107,7 +103,6 @@ class DisplayView: UIView {
             totalTimeValueLabel.leadingAnchor.constraint(equalTo: totalTimeLabel.trailingAnchor, constant: 8),
             totalTimeValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            // Location Row Constraints
             locationLabel.topAnchor.constraint(equalTo: totalTimeLabel.bottomAnchor, constant: 16),
             locationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             locationLabel.widthAnchor.constraint(equalToConstant: 100),
@@ -116,7 +111,6 @@ class DisplayView: UIView {
             locationValueLabel.leadingAnchor.constraint(equalTo: locationLabel.trailingAnchor, constant: 8),
             locationValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            // Message View Constraints
             messageLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 16),
             messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             messageLabel.widthAnchor.constraint(equalToConstant: 100),

@@ -43,8 +43,6 @@ extension RegisterViewController {
         
         changeRequest?.commitChanges(completion: {(error) in
             if error == nil{
-                // profile update successful
-                // self.hideActivityIndicator()
                 
             } else {
                 print("Error occured: \(String(describing: error))")

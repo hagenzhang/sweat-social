@@ -36,7 +36,6 @@ class CreateView: UIView, UITextViewDelegate {
         totalTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(totalTimeLabel)
 
-        // Configure Hours Text Field
         hoursTextField.placeholder = "Hours"
         hoursTextField.borderStyle = .roundedRect
         hoursTextField.keyboardType = .numberPad
@@ -44,7 +43,6 @@ class CreateView: UIView, UITextViewDelegate {
         hoursTextField.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(hoursTextField)
 
-        // Configure Minutes Text Field
         minutesTextField.placeholder = "Minutes"
         minutesTextField.borderStyle = .roundedRect
         minutesTextField.keyboardType = .numberPad
@@ -59,7 +57,6 @@ class CreateView: UIView, UITextViewDelegate {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(locationLabel)
 
-        // Configure Location Text Field
         locationTextField.placeholder = "Enter location (Optional)"
         locationTextField.borderStyle = .roundedRect
         locationTextField.font = UIFont.systemFont(ofSize: 16)
@@ -117,18 +114,16 @@ class CreateView: UIView, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        // Remove placeholder text when editing begins
         if textView.text == self.placeholderText {
             textView.text = ""
-            textView.textColor = .black  // Normal text color
+            textView.textColor = .black
         }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        // Restore placeholder text if the text view is empty
         if textView.text.isEmpty {
             textView.text = self.placeholderText
-            textView.textColor = .lightGray  // Placeholder color
+            textView.textColor = .lightGray
         }
     }
     required init?(coder: NSCoder) {

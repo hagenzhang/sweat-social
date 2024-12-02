@@ -1,10 +1,3 @@
-//
-//  DisplayViewController.swift
-//  sweat-social
-//
-//  Created by Ian Kim on 12/1/24.
-//
-
 import UIKit
 import Alamofire
 

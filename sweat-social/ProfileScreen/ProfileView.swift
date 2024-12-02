@@ -69,7 +69,6 @@ class ProfileView: UIView {
         self.addSubview(tableViewPosts)
     }
     
-    //MARK: initializing the constraints...
     func initConstraints(){
         NSLayoutConstraint.activate([
             avatarImg.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16),
