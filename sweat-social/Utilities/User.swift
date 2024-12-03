@@ -45,12 +45,20 @@ struct UserAvatar: Codable{
 }
 
 
-struct Posts: Codable {
+struct Post: Codable {
     var hours: String
     var mins: String
     var loc: String
     var message: String
-    var image: ImageMetadata
+    var image: ImageMetadata?
+    
+    init(hours: String, mins: String, loc: String, message: String) {
+        self.hours = hours
+        self.mins = mins
+        self.loc = loc
+        self.message = message
+        self.image = nil
+    }
     
     init(hours: String, mins: String, loc: String, message: String, image: ImageMetadata) {
         self.hours = hours

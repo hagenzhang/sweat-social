@@ -4,7 +4,7 @@ import Alamofire
 class DisplayViewController: UIViewController {
 
     let displayView = DisplayView()
-    var receivedPost: Posts = Posts(hours: "", 
+    var receivedPost: Post = Post(hours: "", 
                                     mins: "",
                                     loc: "",
                                     message: "",

@@ -49,6 +49,7 @@ class CreateViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
             return
         }
+        
         guard var mins = createView.minutesTextField.text, !mins.isEmpty else {
             let alert = UIAlertController(title: "Text Error", message: "Please enter minutes.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -92,7 +93,7 @@ class CreateViewController: UIViewController {
         pickedImage = nil
         
         self.cloudinary.createUploader().upload(data: imageData, uploadPreset: "fsreydnl", completionHandler:  { result, error in
-            if let error = error as? NSError {
+            if let error = error {
                 print("Error: \(error.localizedDescription)")
                 print("Error details: \(error.userInfo)")
                 print(imageData)
@@ -105,15 +106,15 @@ class CreateViewController: UIViewController {
                 
                 let postCollection = Firestore.firestore().collection("users").document(FirebaseUtil.currentUser!.email!).collection("posts").document(curDT.description)
                 do {
-                    let tempPost = Posts(hours: hours, mins: mins, loc: loc, message: details, image: metaData)
+                    let tempPost = Post(hours: hours, mins: mins, loc: loc, message: details, image: metaData)
                     try postCollection.setData(from: tempPost, completion: {(error) in
                         if error == nil {
-                            print("Added user to firestore")
+                            print("Added post to firestore")
                         }
                     })
                     self.navigationController?.popViewController(animated: true)
                 } catch {
-                    print("Error adding document!")
+                    print("Error adding post!")
                 }
             }
         })

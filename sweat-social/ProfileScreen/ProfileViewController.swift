@@ -8,7 +8,7 @@ import Alamofire
 class ProfileViewController: UIViewController {
 
     let profileScreen = ProfileView()
-    var posts = [Posts]()
+    var posts = [Post]()
     let database = Firestore.firestore()
 
     override func loadView() {
@@ -73,7 +73,7 @@ class ProfileViewController: UIViewController {
                     let message = document.get("message") as? String
                     let tempImg = (document.get("image") as? [String: Any])!
 
-                    let temp = Posts(hours: hours!,
+                    let temp = Post(hours: hours!,
                                      mins: mins!,
                                      loc: loc!,
                                      message: message!,
@@ -127,7 +127,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let sendPost = Posts(hours: posts[indexPath.row].hours,
+        let sendPost = Post(hours: posts[indexPath.row].hours,
                              mins: posts[indexPath.row].mins,
                              loc: posts[indexPath.row].loc,
                              message: posts[indexPath.row].message,

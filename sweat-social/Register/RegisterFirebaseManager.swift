@@ -61,7 +61,7 @@ extension RegisterViewController {
         pickedImage = nil
         
         self.cloudinary.createUploader().upload(data: imageData, uploadPreset: "fsreydnl", completionHandler:  { result, error in
-            if let error = error as? NSError {
+            if let error = error {
                 print("Error: \(error.localizedDescription)")
                 print("Error details: \(error.userInfo)")
                 print(imageData)
