@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 
+/*
 let tmpExercise1 = PostExercise(exerciseName: "Pushups", sets: 3, reps: 20, comment: "Unweighted")
 let tmpExercise2 = PostExercise(exerciseName: "Bench Press", sets: 3, reps: 6, comment: "135 lb")
 let tmpExercise3 = PostExercise(exerciseName: "Sit-Ups", sets: 3, reps: 12, comment: "Unweighted")
@@ -39,7 +40,7 @@ struct PostExercise: Identifiable, Codable {
         self.comment = comment
     }
 }
-
+*/
 
 struct Post: Codable {
     var hours: String
