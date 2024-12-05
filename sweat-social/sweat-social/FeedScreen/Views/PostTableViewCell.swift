@@ -63,9 +63,7 @@ class PostTableViewCell: UITableViewCell {
     }
     
     // func setupPostImage() { }
-    
-    // func setupPostExerciseTable() { }
-    
+
     func setupLikeSymbol() {
         likedSymbol = UIImageView(image: UIImage(systemName: "heart.fill"))
         likedSymbol.translatesAutoresizingMaskIntoConstraints = false
@@ -83,8 +81,6 @@ class PostTableViewCell: UITableViewCell {
         caption.font = caption.font?.withSize(12)
         caption.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(caption)
-        
-        
     }
     
     

@@ -6,12 +6,10 @@
 import Foundation
 import SwiftUI
 
-
 let tmpExercise1 = PostExercise(exerciseName: "Pushups", sets: 3, reps: 20, comment: "Unweighted")
 let tmpExercise2 = PostExercise(exerciseName: "Bench Press", sets: 3, reps: 6, comment: "135 lb")
 let tmpExercise3 = PostExercise(exerciseName: "Sit-Ups", sets: 3, reps: 12, comment: "Unweighted")
 let tmpExercise4 = PostExercise(exerciseName: "Treadmill Run", sets: 1, reps: 1, comment: "2 miles in 16 minutes")
-
 
 let tempPostList = [Post(hours: "1", mins: "30", loc: "home", message: "temp msg 1",
                          exercises: [tmpExercise1, tmpExercise3, tmpExercise4]),
@@ -48,10 +46,10 @@ struct Post: Codable {
     var mins: String
     var loc: String
     var message: String
-    var exercises: [PostExercise]
+    var exercises: String
     var imageRef: String?
     
-    init(hours: String, mins: String, loc: String, message: String, exercises: [PostExercise]) {
+    init(hours: String, mins: String, loc: String, message: String, exercises: String) {
         self.hours = hours
         self.mins = mins
         self.loc = loc
