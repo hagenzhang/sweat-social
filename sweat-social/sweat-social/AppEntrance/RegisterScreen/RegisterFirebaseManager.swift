@@ -2,95 +2,125 @@
 //  RegisterFirebaseManager.swift
 //  sweat-social
 //
+//  RegisterView extension for saving the new user in Firebase.
+//  New users will need to be added in both Firebase Authentication and Firestore.
+//
+
 
 import Foundation
 import FirebaseAuth
-import FirebaseFirestore
+import FirebaseStorage
+import UIKit
 
 extension RegisterViewController {
     
-    func registerNewAccount() {
-        if let email = registerView.textFieldEmail.text,
-           let password = registerView.textFieldPassword.text{
+    func registerUser() {
+        var profilePhotoURL:URL?
+        
+        // Check the text fields to ensure that the inputs are valid.
+        if !areInputsValid() {
+            return
+        }
+        
+        // Upload the profile photo if there is any. Having a photo is optional.
+        if let image = pickedImage {
+            print("RegisterFirebaseManager - pickedImage is not nil")
             
-            let name = registerView.textFieldFirstName.text! + " " + registerView.textFieldLastName.text!
-            Auth.auth().createUser(withEmail: email, password: password, completion: {result, error in
-                if error == nil{
-                    self.setNameOfTheUserInFirebaseAuth(name: name)
-                    let user = User(name: name, email: email)
-                    self.saveUserToFireStore(user: user)
-                    
-                } else {
-                    if let authError = error as NSError?, authError.domain == AuthErrorDomain {
-                        if authError.userInfo[AuthErrorUserInfoNameKey] as? String == "ERROR_WEAK_PASSWORD" {
-                            let alert = UIAlertController(title: "Password Error", message: "Password should be at least 6 characters.", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                            self.present(alert, animated: true, completion: nil)
-                        }
-                        else if authError.userInfo[AuthErrorUserInfoNameKey] as? String == "ERROR_EMAIL_ALREADY_IN_USE" {
-                            let alert = UIAlertController(title: "Email Error", message: "The email address is already in use by another account.", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                            self.present(alert, animated: true, completion: nil)
-                        }
-                        
+            if let jpegData = image.jpegData(compressionQuality: 80) {
+                let storageRef = storage.reference()
+                let imagesRepo = storageRef.child("profilePictures")
+                let imageRef = imagesRepo.child("\(NSUUID().uuidString).jpg")
+                
+                _ = imageRef.putData(jpegData, completion: {(metadata, error) in
+                    if error == nil {
+                        imageRef.downloadURL(completion: { (url, error) in
+                            if error == nil {
+                                profilePhotoURL = url
+                            }
+                        })
                     }
-                    print(error!)
+                })
+            }
+        }
+        
+        // Creating the User based on the text fields.
+        if let name = registerView.textFieldUsername.text,
+           let email = registerView.textFieldEmail.text,
+           let password = registerView.textFieldPassword.text {
+            Auth.auth().createUser(withEmail: email, password: password, completion: { result, error in
+                if error == nil {
+                    // if no error, set user info in Firebase Auth (with link to Photo!)
+                    self.setNameAndPhotoOfTheUserInFirebaseAuth(name: name, email: email, photoURL: profilePhotoURL)
                 }
             })
         }
     }
     
-    func setNameOfTheUserInFirebaseAuth(name: String){
+    func setNameAndPhotoOfTheUserInFirebaseAuth(name: String, email: String, photoURL: URL?) {
         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = name
+        changeRequest?.photoURL = photoURL
+        
+        print("RegisterFirebaseManager - PhotoURL = \(String(describing: photoURL))")
         
         changeRequest?.commitChanges(completion: {(error) in
-            if error == nil{
-                
+            if error != nil{
+                print("RegisterFirebaseManager - Error occured: \(String(describing: error))")
             } else {
-                print("Error occured: \(String(describing: error))")
+                self.saveUserToFireStore(user: <#T##User#>)
+                self.navigationController?.popViewController(animated: true)
             }
         })
     }
-
+    
     func saveUserToFireStore(user: User){
-        var imageData = Data()
-
-        if pickedImage != nil {
-            imageData = pickedImage!.jpegData(compressionQuality: 0.9)!
-        } else {
-            imageData =  UIImage(systemName: "person.fill")!.jpegData(compressionQuality: 0.9)!
-        }
-        pickedImage = nil
+        let collectionUser = database.collection("users").document(user.email)
         
-        self.cloudinary.createUploader().upload(data: imageData, uploadPreset: "fsreydnl", completionHandler:  { result, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                print("Error details: \(error.userInfo)")
-                print(imageData)
-                
-            } else if let result = result {
-                let publicId = result.publicId
-                let secureUrl = result.secureUrl
-                let createdAt = Date()
-                let metaData = ImageMetadata(publicId: publicId!, url: secureUrl!, createdAt: createdAt)
-                
-                let collectionUser = self.database.collection("users").document(user.email)
-                do {
-                    let userImg = UserAvatar(name: user.name, email: user.email, image: metaData)
-                    try collectionUser.setData(from: userImg, completion: {(error) in
-                        if error == nil {
-                            print("Added user to firestore")
-                        }
-                    })
-                } catch {
-                    print("Error adding document!")
+        do {
+            try collectionUser.setData(from: user, completion: {(error) in
+                if error == nil {
+                    print("Added user to firestore")
                 }
-            }
-        })
+            })
+        } catch {
+            print("Error adding document!")
+        }
     }
-    func randomString(length: Int) -> String {
-      let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-      return String((0..<length).map{ _ in letters.randomElement()! })
+    
+    
+    func areInputsValid() -> Bool {
+        if registerView.textFieldUsername.text == "" {
+            let alert = UIAlertController(title: "Username Error", message: "Enter a username.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        else if !isValidEmail(registerView.textFieldEmail.text!) {
+            let alert = UIAlertController(title: "Email Error", message: "Email must be valid.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        else if registerView.textFieldPassword.text == "" {
+            let alert = UIAlertController(title: "Password Error", message: "Enter a password.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        else if registerView.textFieldPassword.text! != registerView.textFieldConfirm.text! {
+            let alert = UIAlertController(title: "Password Error", message: "The two passwords must match.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
     }
+    
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
+
 }

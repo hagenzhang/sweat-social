@@ -2,6 +2,14 @@
 //  FeedViewController.swift
 //  sweat-social
 //
+//  Serves as the "Home Screen" of the app. Displays whichever feed the user has selected.
+//  The two feeds are the global feed and the user feed. The user feed is filled with content
+//  only from the individuals that the user follows. The global feed is filled with all the
+//  content on the platform.
+//
+//  This screen also contains a toolbar for the following functions:
+//  Viewing profile notifications, creating posts, and viewing the profile page
+//
 
 import UIKit
 import FirebaseAuth
@@ -10,6 +18,8 @@ import FirebaseFirestore
 class FeedViewController: UIViewController {
     
     let feedView = FeedView()
+    
+    var posts = [Post]()
     
     let database = Firestore.firestore()
     
@@ -21,12 +31,19 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         title = "Sweat Social"
         
-
+        // HZ: This seems like a weird place to put the log out, maybe place it in the profile screen instead?
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Log Out",
             style: .plain,
             target: self,
             action: #selector(firebaseLogOut)
+        )
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Search",
+            style: .plain,
+            target: self,
+            action: #selector(toSearchScreen)
         )
         
         let notifs = UIBarButtonItem(image: UIImage(systemName: "app.badge.fill")?.withConfiguration(
@@ -56,16 +73,22 @@ class FeedViewController: UIViewController {
                                          url: (tempImg["url"] as? String)!,
                                          createdAt: (tempImg["createdAt"] as? Timestamp)!.dateValue()))
                     
-                let pvController = ProfileViewController()
-                pvController.receivedPackage = sendUser
-                self.navigationController?.pushViewController(pvController, animated: true)
+                // let pvController = ProfileViewController()
+                // pvController.receivedPackage = sendUser
+                // self.navigationController?.pushViewController(pvController, animated: true)
             }
         }
     }
     
     @objc func createPost() {
-        let cvController = CreateViewController()
-        self.navigationController?.pushViewController(cvController, animated: true)
+        // let cvController = CreateViewController()
+        // self.navigationController?.pushViewController(cvController, animated: true)
+    }
+    
+    
+    @objc func toSearchScreen() {
+        // TODO
+        print("ToSearchScreen: Not Yet Implemented!")
     }
     
     @objc func firebaseLogOut() {
@@ -78,4 +101,5 @@ class FeedViewController: UIViewController {
         }
     }
 }
+
 

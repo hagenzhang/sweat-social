@@ -2,6 +2,10 @@
 //  ViewController.swift
 //  sweat-social
 //
+//  Handles the Login process. Contains the state change listener for logging in/out.
+//  Sends users to the FeedView on successful login. Users can also go to the RegisterScreen
+//  to create a new account in firebase.
+//
 
 import UIKit
 import FirebaseAuth
@@ -9,7 +13,6 @@ import FirebaseAuth
 class ViewController: UIViewController {
     
     let loginView = LogInView()
-    
     let firebaseUtil = FirebaseUtil()
     var handleAuth: AuthStateDidChangeListenerHandle?
     
@@ -31,12 +34,13 @@ class ViewController: UIViewController {
         
         handleAuth = Auth.auth().addStateDidChangeListener{ auth, user in
             if user == nil{
-                print("Logged Out State Change")
+                print("ViewController - Logged Out State Change")
                 FirebaseUtil.currentUser = nil
                 
             } else {
-                print("Logged In State Change")
+                print("ViewController - Logged In State Change")
                 FirebaseUtil.currentUser = user
+                
                 self.toMainScreen()
                 
                 self.loginView.emailField.text = ""
@@ -45,11 +49,6 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func hideKeyboardOnTap(){
-        //MARK: removing the keyboard from screen...
-        view.endEditing(true)
-    }
-
     @objc func loginButtonPress() {
         let email = loginView.emailField.text
         let password = loginView.passwordField.text
@@ -70,9 +69,13 @@ class ViewController: UIViewController {
     }
 
     func toMainScreen() {
-        let mainView = MainViewController()
+        let feedView = FeedViewController()
         self.navigationController?.popToRootViewController(animated: true)
-        self.navigationController?.pushViewController(mainView, animated: true)
+        self.navigationController?.pushViewController(feedView, animated: true)
+    }
+    
+    @objc func hideKeyboardOnTap(){
+        view.endEditing(true)
     }
     
 }

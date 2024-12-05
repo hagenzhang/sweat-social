@@ -7,11 +7,12 @@ import UIKit
 
 class RegisterView: UIView {
     var selectPic: UIButton!
-    var textFieldFirstName: UITextField!
-    var textFieldLastName: UITextField!
+    
+    var textFieldUsername: UITextField!
     var textFieldEmail: UITextField!
     var textFieldPassword: UITextField!
     var textFieldConfirm: UITextField!
+    
     var buttonRegister: UIButton!
     
     override init(frame: CGRect){
@@ -19,7 +20,7 @@ class RegisterView: UIView {
         self.backgroundColor = .white
         
         setupSelectPic()
-        setuptextFieldName()
+        setuptextFieldUsername()
         setuptextFieldEmail()
         setuptextFieldPassword()
         setuptextFieldConfirm()
@@ -39,21 +40,16 @@ class RegisterView: UIView {
         self.addSubview(selectPic)
     }
     
-    func setuptextFieldName(){
-        textFieldFirstName = UITextField()
-        textFieldFirstName.placeholder = "First Name"
-        textFieldFirstName.keyboardType = .default
-        textFieldFirstName.borderStyle = .roundedRect
-        textFieldFirstName.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(textFieldFirstName)
-        
-        textFieldLastName = UITextField()
-        textFieldLastName.placeholder = "Last Name"
-        textFieldLastName.keyboardType = .default
-        textFieldLastName.borderStyle = .roundedRect
-        textFieldLastName.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(textFieldLastName)
-        
+    func setuptextFieldUsername(){
+        textFieldUsername = UITextField()
+        textFieldUsername.placeholder = "Username"
+        textFieldUsername.keyboardType = .default
+        textFieldUsername.borderStyle = .roundedRect
+        textFieldUsername.autocorrectionType = .no
+        textFieldUsername.autocapitalizationType = .none
+        textFieldUsername.spellCheckingType = .no
+        textFieldUsername.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(textFieldUsername)
     }
     
     func setuptextFieldEmail(){
@@ -71,7 +67,6 @@ class RegisterView: UIView {
     func setuptextFieldPassword(){
         textFieldPassword = UITextField()
         textFieldPassword.placeholder = "Password"
-        textFieldPassword.textContentType = .password
         textFieldPassword.isSecureTextEntry = true
         textFieldPassword.borderStyle = .roundedRect
         textFieldPassword.translatesAutoresizingMaskIntoConstraints = false
@@ -81,7 +76,6 @@ class RegisterView: UIView {
     func setuptextFieldConfirm(){
         textFieldConfirm = UITextField()
         textFieldConfirm.placeholder = "Confirm Password"
-        textFieldConfirm.textContentType = .password
         textFieldConfirm.isSecureTextEntry = true
         textFieldConfirm.borderStyle = .roundedRect
         textFieldConfirm.translatesAutoresizingMaskIntoConstraints = false
@@ -102,17 +96,13 @@ class RegisterView: UIView {
             selectPic.widthAnchor.constraint(equalToConstant: 100),
             selectPic.heightAnchor.constraint(equalToConstant: 100),
             
-            textFieldFirstName.topAnchor.constraint(equalTo: selectPic.bottomAnchor, constant: 32),
-            textFieldFirstName.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 32),
-            textFieldFirstName.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor, constant: -4),
-            textFieldFirstName.heightAnchor.constraint(equalToConstant: 32),
+            textFieldUsername.topAnchor.constraint(equalTo: selectPic.bottomAnchor, constant: 32),
+            textFieldUsername.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
+            textFieldUsername.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 32),
+            textFieldUsername.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32),
+            textFieldUsername.heightAnchor.constraint(equalToConstant: 32),
             
-            textFieldLastName.topAnchor.constraint(equalTo: self.textFieldFirstName.topAnchor),
-            textFieldLastName.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor, constant: 4),
-            textFieldLastName.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32),
-            textFieldLastName.heightAnchor.constraint(equalToConstant: 32),
-            
-            textFieldEmail.topAnchor.constraint(equalTo: textFieldLastName.bottomAnchor, constant: 16),
+            textFieldEmail.topAnchor.constraint(equalTo: textFieldUsername.bottomAnchor, constant: 16),
             textFieldEmail.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
             textFieldEmail.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 32),
             textFieldEmail.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32),

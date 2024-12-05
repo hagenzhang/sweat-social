@@ -25,12 +25,20 @@ struct ImageMetadata: Codable {
 
 struct User: Codable{
     @DocumentID var id: String?
-    var name: String
+    var username: String
     var email: String
+    var photoRef: String?
     
-    init(name: String, email: String) {
-        self.name = name
+    init(username: String, email: String) {
+        self.username = username
         self.email = email
+        self.photoRef = nil
+    }
+    
+    init(username: String, email: String, photoRef: String) {
+        self.username = username
+        self.email = email
+        self.photoRef = photoRef
     }
 }
 
@@ -49,30 +57,6 @@ struct UserAvatar: Codable{
     }
 }
 
-
-struct Post: Codable {
-    var hours: String
-    var mins: String
-    var loc: String
-    var message: String
-    var image: ImageMetadata?
-    
-    init(hours: String, mins: String, loc: String, message: String) {
-        self.hours = hours
-        self.mins = mins
-        self.loc = loc
-        self.message = message
-        self.image = nil
-    }
-    
-    init(hours: String, mins: String, loc: String, message: String, image: ImageMetadata) {
-        self.hours = hours
-        self.mins = mins
-        self.loc = loc
-        self.message = message
-        self.image = image
-    }
-}
 
 class Configs{
     static let tableViewTextsID = "tableViewTextsID"

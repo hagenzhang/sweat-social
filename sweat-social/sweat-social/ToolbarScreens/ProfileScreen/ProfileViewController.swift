@@ -5,7 +5,7 @@
 
 import UIKit
 import FirebaseFirestore
-
+/*
 class ProfileViewController: UIViewController {
 
     let profileScreen = ProfileView()
@@ -138,4 +138,4 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
         self.navigationController?.pushViewController(dvController, animated: true)
     }
 }
-
+*/
