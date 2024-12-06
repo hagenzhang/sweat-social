@@ -60,29 +60,12 @@ struct Post: Codable {
         
     }
     
-    init(hours: String, mins: String, loc: String, message: String, exercises: [PostExercise], imageRef: String) {
+    init(hours: String, mins: String, loc: String, message: String, exercises: String, imageRef: String) {
         self.hours = hours
         self.mins = mins
         self.loc = loc
         self.message = message
         self.imageRef = imageRef
-    }
-}
-
-struct PostExerciseTable: View {
-    let exercises: [PostExercise]
-    
-    var body: some View {
-        Table(exercises) {
-            TableColumn("Exercise Name", value: \.exerciseName)
-            TableColumn("Sets") { exercise in
-                Text("\(exercise.sets)")
-            }
-            TableColumn("Reps") { exercise in
-                Text("\(exercise.reps)")
-            }
-            TableColumn("Comment", value: \.comment)
-        }
-        .padding()
+        self.exercises = ""
     }
 }

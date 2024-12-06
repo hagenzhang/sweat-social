@@ -10,13 +10,13 @@
 import Foundation
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseFirestore
 import UIKit
 
 extension RegisterViewController {
     
+    // This function will set off a long chain of function calls, due to how the completion closure works.
     func registerUser() {
-        var profilePhotoURL:URL?
-        
         // Check the text fields to ensure that the inputs are valid.
         if !areInputsValid() {
             return
@@ -24,66 +24,201 @@ extension RegisterViewController {
         
         // Upload the profile photo if there is any. Having a photo is optional.
         if let image = pickedImage {
-            print("RegisterFirebaseManager - pickedImage is not nil")
+            print("RegisterFirebaseManager - Photo Selected, pickedImage is NOT NIL")
             
             if let jpegData = image.jpegData(compressionQuality: 80) {
                 let storageRef = storage.reference()
-                let imagesRepo = storageRef.child("profilePictures")
+                let imagesRepo = storageRef.child("profilePictures") // storage path for profile photos
                 let imageRef = imagesRepo.child("\(NSUUID().uuidString).jpg")
                 
                 _ = imageRef.putData(jpegData, completion: {(metadata, error) in
                     if error == nil {
                         imageRef.downloadURL(completion: { (url, error) in
                             if error == nil {
-                                profilePhotoURL = url
+                                print("RegisterFirebaseManager - Success on uploadTask")
+                                print("RegisterFirebaseManager -     url = \(url!)")
+                                self.addUserToFirebaseAuth(name: self.registerView.textFieldUsername.text!,
+                                                           email: self.registerView.textFieldEmail.text!,
+                                                           pass: self.registerView.textFieldPassword.text!,
+                                                           photoRef: url!)
                             }
                         })
+                    } else {
+                        print("RegisterFirebaseManager - uploadTask Failed!")
+                        print("RegisterFirebaseManager - Error: \(String(describing: error))")
                     }
                 })
             }
-        }
-        
-        // Creating the User based on the text fields.
-        if let name = registerView.textFieldUsername.text,
-           let email = registerView.textFieldEmail.text,
-           let password = registerView.textFieldPassword.text {
-            Auth.auth().createUser(withEmail: email, password: password, completion: { result, error in
-                if error == nil {
-                    // if no error, set user info in Firebase Auth (with link to Photo!)
-                    self.setNameAndPhotoOfTheUserInFirebaseAuth(name: name, email: email, photoURL: profilePhotoURL)
-                }
-            })
+        } else {
+            print("RegisterFirebaseManager - No Photo Selected, using NIL")
+            self.addUserToFirebaseAuth(name: self.registerView.textFieldUsername.text!,
+                                       email: self.registerView.textFieldEmail.text!,
+                                       pass: self.registerView.textFieldPassword.text!,
+                                       photoRef: nil)
         }
     }
     
+    
+    // Uses the given information to create an initial user in Firebase Authentication.
+    func addUserToFirebaseAuth(name: String, email: String, pass: String, photoRef: URL?) {
+        Auth.auth().createUser(withEmail: email, password: pass, completion: { result, error in
+            if error == nil {
+                // if no error, set user info in Firebase Auth (with link to Photo!)
+                print("RegisterFirebaseManager - User successfully created in Firebase Authentication")
+                self.setNameAndPhotoOfTheUserInFirebaseAuth(name: name, email: email, photoURL: photoRef)
+                
+            } else {
+                print("RegisterFirebaseManager - User Failed to be created in Firebase Authentication!")
+                print("RegisterFirebaseManager - Error: \(String(describing: error))")
+                
+                // error handling
+                if let authError = error as NSError?, authError.domain == AuthErrorDomain {
+                    if authError.userInfo[AuthErrorUserInfoNameKey] as? String == "ERROR_WEAK_PASSWORD" {
+                        let alert = UIAlertController(title: "Password Error", message: "Password should be at least 6 characters.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    else if authError.userInfo[AuthErrorUserInfoNameKey] as? String == "ERROR_EMAIL_ALREADY_IN_USE" {
+                        let alert = UIAlertController(title: "Email Error", message: "The email address is already in use by another account.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+        })
+    }
+
+    
+    // Adds Name and Photo parameters to the User in Firebase Authentication.
+    // This function gives our new User a username and a profile photo reference from Firebase Storage
     func setNameAndPhotoOfTheUserInFirebaseAuth(name: String, email: String, photoURL: URL?) {
         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = name
-        changeRequest?.photoURL = photoURL
         
-        print("RegisterFirebaseManager - PhotoURL = \(String(describing: photoURL))")
+        // Only add the photo Ref in if there is one,
+        if let photo = photoURL {
+            changeRequest?.photoURL = photo
+        } else {
+            changeRequest?.photoURL = URL(string: "")
+        }
+        
+        print("RegisterFirebaseManager - PhotoURL to update in Firebase Auth = \(String(describing: photoURL))")
         
         changeRequest?.commitChanges(completion: {(error) in
             if error != nil{
-                print("RegisterFirebaseManager - Error occured: \(String(describing: error))")
+                print("RegisterFirebaseManager - Error occured with User Auth Change: \(String(describing: error))")
             } else {
-                self.saveUserToFireStore(user: <#T##User#>)
-                self.navigationController?.popViewController(animated: true)
+                print("RegisterFirebaseManager - User Auth Change Successful")
+                
+                let newUser = User(username: name, email: email, photoURL: photoURL)
+                
+                self.saveUserToFireStore(user: newUser)
             }
         })
     }
     
     func saveUserToFireStore(user: User){
-        let collectionUser = database.collection("users").document(user.email)
+        let collectionUser = database.collection("users").document(user.username)
         
         do {
             try collectionUser.setData(from: user, completion: {(error) in
                 if error == nil {
-                    print("Added user to firestore")
+                    print("RegisterFirebaseManager - Adding User to Firestore Successful")
+                    
+                    // Automatically follow and get followed by "admin" (for testing purposes, we can remove this later)
+                    self.addAdminAsFollower(userUsername: user.username, adminUsername: "admin")
+                    
+                    self.navigationController?.popViewController(animated: true)
+                    
+                } else {
+                    print("RegisterFirebaseManager - Error Adding User to Firestore!")
+                    print("RegisterFirebaseManager -     \(String(describing: error))")
                 }
             })
         } catch {
-            print("Error adding document!")
+            print("RegisterFirebaseManager - EXCEPTION Adding User to Firestore!")
+        }
+    }
+    
+    // Function for testing purposes.
+    func addAdminAsFollower(userUsername: String, adminUsername: String) {
+        self.addFollower(userUsername: userUsername, followerUsername: adminUsername)
+        self.addFollow(userUsername: userUsername, followerUsername: adminUsername)
+    }
+
+    
+    // Function for adding a follower to a User based on usernames.
+    func addFollower(userUsername: String, followerUsername: String) {
+        let userRef = database.collection("users").document(userUsername)
+        let followerRef = database.collection("users").document(followerUsername)
+
+        userRef.collection("followers").document(followerUsername).setData([
+            "reference": followerRef
+        ]) { error in
+            if let error = error {
+                print("RegisterFirebaseManager -    Error adding follower: \(error.localizedDescription)")
+            } else {
+                print("RegisterFirebaseManager -    Follower added successfully.")
+            }
+        }
+    }
+
+    // Function for a User following another user based on usernames.
+    func addFollow(userUsername: String, followerUsername: String) {
+        let userRef = database.collection("users").document(userUsername)
+        let followingRef = database.collection("users").document(followerUsername)
+
+        userRef.collection("following").document(followerUsername).setData([
+            "reference": followingRef
+        ]) { error in
+            if let error = error {
+                print("RegisterFirebaseManager -    Error adding following: \(error.localizedDescription)")
+            } else {
+                print("RegisterFirebaseManager -    Following added successfully.")
+            }
+        }
+    }
+    
+    // CHANGE THESE TO USERNAME INSTEAD
+    // Function to get a User's followers.
+    func getFollowers(for userEmail: String) {
+        let userRef = database.collection("users").document(userEmail)
+        
+        userRef.collection("followers").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error retrieving followers: \(error.localizedDescription)")
+            } else {
+                for document in snapshot?.documents ?? [] {
+                    if let ref = document.get("reference") as? DocumentReference {
+                        ref.getDocument { userDoc, error in
+                            if let userDoc = userDoc, userDoc.exists {
+                                print("Follower: \(userDoc.data() ?? [:])")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Function to get who a User is following.
+    func getFollowing(for userEmail: String) {
+        let userRef = database.collection("users").document(userEmail)
+        
+        userRef.collection("following").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error retrieving following: \(error.localizedDescription)")
+            } else {
+                for document in snapshot?.documents ?? [] {
+                    if let ref = document.get("reference") as? DocumentReference {
+                        ref.getDocument { userDoc, error in
+                            if let userDoc = userDoc, userDoc.exists {
+                                print("Following: \(userDoc.data() ?? [:])")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     

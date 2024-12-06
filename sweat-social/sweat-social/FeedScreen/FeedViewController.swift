@@ -63,21 +63,21 @@ class FeedViewController: UIViewController {
     
 
     @objc func getProfile() {
-        database.collection("users").document(FirebaseUtil.currentUser!.email!).getDocument { (snapshot, error) in
-            if error == nil {
-                let tempImg = (snapshot!.get("image") as? [String: Any])!
-                let sendUser = UserAvatar(
-                    name: (snapshot!.get("name") as? String)!,
-                    email: (snapshot!.get("email") as? String)!,
-                    image: ImageMetadata(publicId: (tempImg["publicId"] as? String)!,
-                                         url: (tempImg["url"] as? String)!,
-                                         createdAt: (tempImg["createdAt"] as? Timestamp)!.dateValue()))
-                    
-                // let pvController = ProfileViewController()
-                // pvController.receivedPackage = sendUser
-                // self.navigationController?.pushViewController(pvController, animated: true)
-            }
-        }
+//        database.collection("users").document(FirebaseUtil.currentUser!.email!).getDocument { (snapshot, error) in
+//            if error == nil {
+//                let tempImg = (snapshot!.get("image") as? [String: Any])!
+//                let sendUser = UserAvatar(
+//                    name: (snapshot!.get("name") as? String)!,
+//                    email: (snapshot!.get("email") as? String)!,
+//                    image: ImageMetadata(publicId: (tempImg["publicId"] as? String)!,
+//                                         url: (tempImg["url"] as? String)!,
+//                                         createdAt: (tempImg["createdAt"] as? Timestamp)!.dateValue()))
+//                    
+//                // let pvController = ProfileViewController()
+//                // pvController.receivedPackage = sendUser
+//                // self.navigationController?.pushViewController(pvController, animated: true)
+//            }
+//        }
     }
     
     @objc func createPost() {

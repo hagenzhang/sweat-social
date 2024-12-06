@@ -15,7 +15,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     
     // Sets the label values for each of the Cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Configs.tableViewTextsID, for: indexPath) as! PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewTextsID", for: indexPath) as! PostTableViewCell
         // cell.labelName.text = posts[indexPath.row].name
         // cell.labelEmail.text = posts[indexPath.row].email
         return cell

@@ -18,11 +18,6 @@ class PostTableViewCell: UITableViewCell {
     var likedSymbol: UIImageView!
     var caption: UITextView!
     
-    // temp objects TODO
-    var tempRect: UIImageView!
-    var exerciseTable: PostExerciseTable!
-    
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -32,10 +27,6 @@ class PostTableViewCell: UITableViewCell {
         
         setupLikeSymbol()
         setupCaption()
-        
-        tempRect = UIImageView(image: UIImage(systemName: "square.fill"))
-        tempRect.translatesAutoresizingMaskIntoConstraints = false
-        wrapperCellView.addSubview(tempRect)
         
         initConstraints()
     }
@@ -98,12 +89,7 @@ class PostTableViewCell: UITableViewCell {
             nameLabel.topAnchor.constraint(equalTo: wrapperCellView.topAnchor, constant: 5),
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 5),
             
-            // stand-in for where the post photo will go
-            tempRect.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 5),
-            tempRect.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor),
-            tempRect.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor),
-            
-            likedSymbol.topAnchor.constraint(equalTo: tempRect.bottomAnchor, constant: 5),
+            likedSymbol.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
             likedSymbol.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 5),
             likedSymbol.heightAnchor.constraint(equalToConstant: 20),
             
