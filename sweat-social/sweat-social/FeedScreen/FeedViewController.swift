@@ -13,15 +13,12 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseFirestore
+
 
 class FeedViewController: UIViewController {
     
     let feedView = FeedView()
-    
     var posts = [Post]()
-    
-    let database = Firestore.firestore()
     
     override func loadView() {
         view = feedView
@@ -54,30 +51,35 @@ class FeedViewController: UIViewController {
         ), style: .plain, target: self, action: #selector(createPost))
         let profile = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill")?.withConfiguration(
             UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
-        ), style: .plain, target: self,  action: #selector(getProfile))
+        ), style: .plain, target: self,  action: #selector(toProfileScreen))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
         
+        feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
     }
     
-
-    @objc func getProfile() {
-//        database.collection("users").document(FirebaseUtil.currentUser!.email!).getDocument { (snapshot, error) in
-//            if error == nil {
-//                let tempImg = (snapshot!.get("image") as? [String: Any])!
-//                let sendUser = UserAvatar(
-//                    name: (snapshot!.get("name") as? String)!,
-//                    email: (snapshot!.get("email") as? String)!,
-//                    image: ImageMetadata(publicId: (tempImg["publicId"] as? String)!,
-//                                         url: (tempImg["url"] as? String)!,
-//                                         createdAt: (tempImg["createdAt"] as? Timestamp)!.dateValue()))
-//                    
-//                // let pvController = ProfileViewController()
-//                // pvController.receivedPackage = sendUser
-//                // self.navigationController?.pushViewController(pvController, animated: true)
-//            }
-//        }
+    
+    @objc func toProfileScreen() {
+        FirebaseUserUtil().getProfileInformation(username: (FirebaseUserUtil.currentUser?.displayName)! , completion: { profile in
+            print("FeedViewController - Going to Profile Screen")
+            
+            if let profile = profile {
+                print("FeedViewController - Successful Profile Define: \(profile)")
+                
+                let profileViewController = ProfileViewController()
+                
+                // Unpack all of the Profile Info so it renders in the View.
+                profileViewController.unpackProfile(receivedPackage: profile)
+                
+                // Navigate to the ProfileView.
+                self.navigationController?.pushViewController(profileViewController, animated: true)
+                print("") // spacer in logs
+                
+            } else {
+                print("FeedViewController - Failed to Define Profile!")
+            }
+            
+            
+        })
     }
     
     @objc func createPost() {

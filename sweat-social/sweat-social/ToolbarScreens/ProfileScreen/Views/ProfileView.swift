@@ -10,6 +10,7 @@ class ProfileView: UIView {
     var labelName: UILabel!
     var labelEmail: UILabel!
     var labelFollowing: UILabel!
+    var labelFollowers: UILabel!
     var avatarImg: UIImageView!
     var separatorLine: UIView!
     var tableViewPosts: UITableView!
@@ -25,6 +26,7 @@ class ProfileView: UIView {
         setupName()
         setupEmail()
         setupFollowing()
+        setupFollowers()
         setupAvatarImg()
         setupSeparatorLine()
         setupTableViewPosts()
@@ -42,21 +44,30 @@ class ProfileView: UIView {
     func setupName() {
         labelName = UILabel()
         labelName.textAlignment = .center
+        labelName.font = UIFont.boldSystemFont(ofSize: 24)
         labelName.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(labelName)
     }
     func setupEmail() {
         labelEmail = UILabel()
         labelEmail.textAlignment = .center
+        labelEmail.font = UIFont.systemFont(ofSize: 20)
         labelEmail.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(labelEmail)
     }
-    
     func setupFollowing() { // could make this a button to display
         labelFollowing = UILabel()
-        labelFollowing.textAlignment = .center
+        labelFollowing.textAlignment = .left
+        labelFollowing.font = UIFont.systemFont(ofSize: 16)
         labelFollowing.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(labelFollowing)
+    }
+    func setupFollowers() {
+        labelFollowers = UILabel()
+        labelFollowers.textAlignment = .right
+        labelFollowers.font = UIFont.systemFont(ofSize: 16)
+        labelFollowers.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(labelFollowers)
     }
     
     func setupSeparatorLine() {
@@ -89,9 +100,14 @@ class ProfileView: UIView {
             labelEmail.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 4),
             labelEmail.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             
-            labelFollowing.leadingAnchor.constraint(equalTo: avatarImg.trailingAnchor, constant: 16),
+            // on the left
+            labelFollowing.leadingAnchor.constraint(equalTo: avatarImg.trailingAnchor, constant: 64),
             labelFollowing.topAnchor.constraint(equalTo: labelEmail.bottomAnchor, constant: 4),
-            labelFollowing.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            
+            // on the rights
+            labelFollowers.leadingAnchor.constraint(equalTo: labelFollowing.trailingAnchor, constant: 4),
+            labelFollowers.topAnchor.constraint(equalTo: labelEmail.bottomAnchor, constant: 4),
+            labelFollowers.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -64),
             
             separatorLine.topAnchor.constraint(equalTo: avatarImg.bottomAnchor, constant: 16),
             separatorLine.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),

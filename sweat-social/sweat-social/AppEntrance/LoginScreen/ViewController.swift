@@ -13,7 +13,6 @@ import FirebaseAuth
 class ViewController: UIViewController {
     
     let loginView = LogInView()
-    let firebaseUtil = FirebaseUtil()
     var handleAuth: AuthStateDidChangeListenerHandle?
     
     override func loadView() {
@@ -35,11 +34,11 @@ class ViewController: UIViewController {
         handleAuth = Auth.auth().addStateDidChangeListener{ auth, user in
             if user == nil{
                 print("ViewController - Logged Out State Change")
-                FirebaseUtil.currentUser = nil
+                FirebaseUserUtil.currentUser = nil
                 
             } else {
                 print("ViewController - Logged In State Change")
-                FirebaseUtil.currentUser = user
+                FirebaseUserUtil.currentUser = user
                 
                 self.toMainScreen()
                 
@@ -72,6 +71,7 @@ class ViewController: UIViewController {
         let feedView = FeedViewController()
         self.navigationController?.popToRootViewController(animated: true)
         self.navigationController?.pushViewController(feedView, animated: true)
+        print("") // spacer in logs
     }
     
     @objc func hideKeyboardOnTap(){

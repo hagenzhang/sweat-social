@@ -71,7 +71,7 @@ class RegisterViewController: UIViewController {
         present(photoPicker, animated: true, completion: nil)
     }
     
-    @objc func onRegisterTapped(){
+    @objc func onRegisterTapped() {
         registerUser()
     }
     

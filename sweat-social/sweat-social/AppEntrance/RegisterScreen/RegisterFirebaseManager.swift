@@ -129,6 +129,7 @@ extension RegisterViewController {
                     self.addAdminAsFollower(userUsername: user.username, adminUsername: "admin")
                     
                     self.navigationController?.popViewController(animated: true)
+                    print("") // spacer in logs
                     
                 } else {
                     print("RegisterFirebaseManager - Error Adding User to Firestore!")

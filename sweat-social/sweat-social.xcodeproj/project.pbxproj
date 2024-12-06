@@ -34,7 +34,6 @@
 		F3F3D3742CFF8FED00A83C7F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D3732CFF8FED00A83C7F /* ProfileView.swift */; };
 		F3F3D3762CFF900B00A83C7F /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D3752CFF900B00A83C7F /* ProfileCellView.swift */; };
 		F3F3D3782CFF995B00A83C7F /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D3772CFF995B00A83C7F /* PhotoManager.swift */; };
-		F3F3D37A2CFFD52E00A83C7F /* PhotoUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D3792CFFD52E00A83C7F /* PhotoUtility.swift */; };
 		F3F3D37E2CFFE26300A83C7F /* PostUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D37D2CFFE26300A83C7F /* PostUtility.swift */; };
 		F3F3D3802CFFE80400A83C7F /* FeedScreenTableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D37F2CFFE80400A83C7F /* FeedScreenTableViewExtension.swift */; };
 		F3F3D3822CFFE8E900A83C7F /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D3812CFFE8E900A83C7F /* PostTableViewCell.swift */; };
@@ -66,7 +65,6 @@
 		F3F3D3732CFF8FED00A83C7F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		F3F3D3752CFF900B00A83C7F /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
 		F3F3D3772CFF995B00A83C7F /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
-		F3F3D3792CFFD52E00A83C7F /* PhotoUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUtility.swift; sourceTree = "<group>"; };
 		F3F3D37D2CFFE26300A83C7F /* PostUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUtility.swift; sourceTree = "<group>"; };
 		F3F3D37F2CFFE80400A83C7F /* FeedScreenTableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedScreenTableViewExtension.swift; sourceTree = "<group>"; };
 		F3F3D3812CFFE8E900A83C7F /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -87,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F3DB2E072D036E0500849FB5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F3F3D3732CFF8FED00A83C7F /* ProfileView.swift */,
+				F3F3D3752CFF900B00A83C7F /* ProfileCellView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F3F3D31F2CFF88EE00A83C7F = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				F3F3D35C2CFF8CB400A83C7F /* UserUtility.swift */,
-				F3F3D3792CFFD52E00A83C7F /* PhotoUtility.swift */,
 				F3F3D37D2CFFE26300A83C7F /* PostUtility.swift */,
 			);
 			path = Utilities;
@@ -218,9 +224,8 @@
 		F3F3D36F2CFF8F0700A83C7F /* ProfileScreen */ = {
 			isa = PBXGroup;
 			children = (
+				F3DB2E072D036E0500849FB5 /* Views */,
 				F3F3D3712CFF8FB500A83C7F /* ProfileViewController.swift */,
-				F3F3D3732CFF8FED00A83C7F /* ProfileView.swift */,
-				F3F3D3752CFF900B00A83C7F /* ProfileCellView.swift */,
 			);
 			path = ProfileScreen;
 			sourceTree = "<group>";
@@ -332,7 +337,6 @@
 				F3F3D3822CFFE8E900A83C7F /* PostTableViewCell.swift in Sources */,
 				F3F3D32E2CFF88EE00A83C7F /* SceneDelegate.swift in Sources */,
 				F3F3D37E2CFFE26300A83C7F /* PostUtility.swift in Sources */,
-				F3F3D37A2CFFD52E00A83C7F /* PhotoUtility.swift in Sources */,
 				F3F3D36E2CFF8ED600A83C7F /* DisplayViewController.swift in Sources */,
 				F3F3D3632CFF8D4C00A83C7F /* CreatePostViewController.swift in Sources */,
 				F3F3D3662CFF8DF800A83C7F /* FeedViewController.swift in Sources */,
