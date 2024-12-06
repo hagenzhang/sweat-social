@@ -7,6 +7,7 @@ import UIKit
 import PhotosUI
 import FirebaseFirestore
 
+/*
 class CreateViewController: UIViewController {
 
     let createView = CreateView()
@@ -28,14 +29,14 @@ class CreateViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save, target: self,
-            action: #selector(saveNoteTapped)
+            action: #selector(savePost)
         )
         
         createView.selectPic.menu = getMenuImagePicker()
     }
     
 
-    @objc func saveNoteTapped() {
+    @objc func savePost() {
         guard var hours = createView.hoursTextField.text, !hours.isEmpty else {
             let alert = UIAlertController(title: "Text Error", message: "Please enter hours.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -194,3 +195,4 @@ extension CreateViewController: UINavigationControllerDelegate, UIImagePickerCon
         }
     }
 }
+*/

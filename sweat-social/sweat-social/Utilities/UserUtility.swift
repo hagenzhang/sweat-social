@@ -45,11 +45,16 @@ class FirebaseUserUtil {
                                         
                                         print("FirebaseUserUtil - Successful Profile Creation (With Image)")
                                         print("") // spacer in logs
+                                        
                                         completion(profile)
                                     } else {
+                                        let user = User(username: username!, email: email!, photoURL: photoURL)
+                                        let profile = Profile(user: user, photo: defaultPhoto!, followers: followers, following: following)
+                                        
                                         print("FirebaseUserUtil - Photo Ref Exists, but Failed To Be Retrieved!")
-                                        print("")
-                                        completion(nil)
+                                        print("") // spacer in logs
+                                        
+                                        completion(profile)
                                     }
                                 }
                             } else {
