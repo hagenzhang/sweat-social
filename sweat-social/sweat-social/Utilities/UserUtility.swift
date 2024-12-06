@@ -149,9 +149,6 @@ struct Profile {
 }
 
 
-
-
-
 extension UIImageView {
     // Borrowed from: https://www.hackingwithswift.com/example-code/uikit/how-to-load-a-remote-image-url-into-uiimageview
     

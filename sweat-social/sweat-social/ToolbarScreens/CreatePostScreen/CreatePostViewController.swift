@@ -3,7 +3,6 @@
 //  sweat-social
 //
 
-/*
 import UIKit
 import PhotosUI
 import FirebaseFirestore
@@ -11,7 +10,6 @@ import FirebaseFirestore
 class CreateViewController: UIViewController {
 
     let createView = CreateView()
-    var cloudinary = CLDCloudinary(configuration: CLDConfiguration(cloudName: "", apiKey: "", apiSecret: ""))
     var pickedImage:UIImage?
     
     override func loadView() {
@@ -24,28 +22,18 @@ class CreateViewController: UIViewController {
         view.backgroundColor = .white
         title = "Create Post"
         
-        //MARK: recognizing the taps on the app screen, not the keyboard...
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardOnTap))
         tapRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapRecognizer)
-        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save, target: self,
             action: #selector(saveNoteTapped)
         )
-
-        let config = CLDConfiguration(cloudName: Keys.cloudName, apiKey: Keys.apiKey)
-        self.cloudinary = CLDCloudinary(configuration: config)
         
         createView.selectPic.menu = getMenuImagePicker()
     }
     
-    //MARK: Hide Keyboard...
-    @objc func hideKeyboardOnTap(){
-        //MARK: removing the keyboard from screen...
-        view.endEditing(true)
-    }
 
     @objc func saveNoteTapped() {
         guard var hours = createView.hoursTextField.text, !hours.isEmpty else {
@@ -157,6 +145,11 @@ class CreateViewController: UIViewController {
         photoPicker.delegate = self
         present(photoPicker, animated: true, completion: nil)
     }
+    
+    @objc func hideKeyboardOnTap(){
+        //MARK: removing the keyboard from screen...
+        view.endEditing(true)
+    }
 
 }
 
@@ -185,6 +178,7 @@ extension CreateViewController:PHPickerViewControllerDelegate{
         }
     }
 }
+
 extension CreateViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true)
@@ -200,4 +194,3 @@ extension CreateViewController: UINavigationControllerDelegate, UIImagePickerCon
         }
     }
 }
-*/

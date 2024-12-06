@@ -3,8 +3,11 @@
 //  sweat-social
 //
 
-import Foundation
 import SwiftUI
+import Foundation
+import FirebaseCore
+import FirebaseStorage
+import FirebaseFirestore
 
 /*
 let tmpExercise1 = PostExercise(exerciseName: "Pushups", sets: 3, reps: 20, comment: "Unweighted")
@@ -46,26 +49,75 @@ struct Post: Codable {
     var hours: String
     var mins: String
     var loc: String
-    var message: String
+    var caption: String
     var exercises: String
-    var imageRef: String?
+    var username: String
+    var imageRef: URL?
+    var timeStamp: Timestamp
     
-    init(hours: String, mins: String, loc: String, message: String, exercises: String) {
+    init(username: String, hours: String, mins: String, loc: String, caption: String, exercises: String, timestamp: Timestamp = Timestamp()) {
+        self.username = username
         self.hours = hours
         self.mins = mins
         self.loc = loc
-        self.message = message
+        self.caption = caption
         self.exercises = exercises
         self.imageRef = nil
-        
+        self.timeStamp = timestamp
     }
     
-    init(hours: String, mins: String, loc: String, message: String, exercises: String, imageRef: String) {
+    init(username: String, hours: String, mins: String, loc: String, caption: String, exercises: String, imageRef: URL?, timestamp: Timestamp = Timestamp()) {
+        self.username = username
         self.hours = hours
         self.mins = mins
         self.loc = loc
-        self.message = message
+        self.caption = caption
         self.imageRef = imageRef
-        self.exercises = ""
+        self.exercises = exercises
+        self.timeStamp = timestamp
     }
+}
+
+
+class FirebasePostUtil {
+    let database = Firestore.firestore()
+    
+    func uploadPost(post: Post, completion: @escaping (Bool) -> Void) {
+        let postsRef = database.collection("posts")
+        print("PostUtility - Uploading Post: \(post)")
+        
+        do {
+            try postsRef.addDocument(from: post) { error in
+                if let error = error {
+                    print("PostUtility -    Error uploading post: \(error.localizedDescription)")
+                    print("") // spacer in logs
+                    completion(false)
+                } else {
+                    print("PostUtility -    Post uploaded successfully")
+                    print("") // spacer in logs
+                    completion(true)
+                }
+            }
+        } catch {
+            print("PostUtility -    Exception while uploading post: \(error.localizedDescription)")
+            print("") // spacer in logs
+            completion(false)
+        }
+    }
+    
+    func getPostsByUser(username: String, completion: @escaping ([Post]) -> Void) {
+        print("PostUtility - Fetching Posts by User: \(username)")
+        
+        database.collection("posts").whereField("username", isEqualTo: username).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching user posts: \(error.localizedDescription)")
+                completion([])
+                return
+            }
+
+            let posts = snapshot?.documents.compactMap { try? $0.data(as: Post.self) } ?? []
+            completion(posts)
+        }
+    }
+    
 }
