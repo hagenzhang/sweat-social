@@ -58,6 +58,20 @@ class FeedViewController: UIViewController {
         feedView.tableViewPosts.dataSource = self
         
         feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
+        
+        fetchPosts()
+    }
+    
+    func fetchPosts() {
+        FirebasePostUtil().getPostsByUser(username: "tester1") { [weak self] posts in
+            guard let self = self else { return }
+            self.posts = posts
+            print("Posts fetched: \(self.posts)")
+            
+            // Reload your UI if needed
+            self.posts = posts
+            feedView.tableViewPosts.reloadData() // Example for UITableView
+        }
     }
     
     
