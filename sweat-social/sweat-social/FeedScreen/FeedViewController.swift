@@ -16,10 +16,10 @@ import FirebaseAuth
 
 
 class FeedViewController: UIViewController {
-    
     let feedView = FeedView()
     var posts = [Post]()
     
+
     override func loadView() {
         view = feedView
     }
@@ -27,6 +27,32 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Sweat Social"
+        
+        FirebaseUserUtil().getProfileInformation(username: FirebaseUserUtil.currentUser!.displayName!, completion: { profile in
+            
+            let tempPostList = [Post(username: FirebaseUserUtil.currentUser!.displayName!, hours: "1", mins: "30", loc: "home", caption: "temp msg 1",
+                                     exercises: "list of exercises", imageRef: profile!.user.photoURL!),
+                                Post(username: FirebaseUserUtil.currentUser!.displayName!, hours: "2", mins: "0", loc: "gym 1", caption: "temp msg 2",
+                                     exercises: "another list of exercises", imageRef: profile!.user.photoURL!),
+                                Post(username: FirebaseUserUtil.currentUser!.displayName!, hours: "1", mins: "0", loc: "gym 2", caption: "temp msg 3",
+                                     exercises: "more lists of exercises", imageRef: profile!.user.photoURL!),
+                                Post(username: FirebaseUserUtil.currentUser!.displayName!, hours: "1", mins: "30", loc: "gym 3", caption: "temp msg 4",
+                                     exercises: "yep, another one here", imageRef: profile!.user.photoURL!),
+                                Post(username: FirebaseUserUtil.currentUser!.displayName!, hours: "2", mins: "0", loc: "gym 4", caption: "temp msg 5",
+                                     exercises: "worked out real hard", imageRef: profile!.user.photoURL!),
+                                Post(username: "admin", hours: "1", mins: "0", loc: "gym 5", caption: "temp msg 6",
+                                     exercises: "ran a couple miles or something", imageRef: profile!.user.photoURL!)]
+            
+            
+            self.posts.append(tempPostList[0])
+            self.posts.append(tempPostList[1])
+            self.posts.append(tempPostList[2])
+            self.posts.append(tempPostList[3])
+            self.posts.append(tempPostList[4])
+            self.posts.append(tempPostList[5])
+        })
+        
+        
         
         // HZ: This seems like a weird place to put the log out, maybe place it in the profile screen instead?
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -53,6 +79,9 @@ class FeedViewController: UIViewController {
             UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
         ), style: .plain, target: self,  action: #selector(toProfileScreen))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        feedView.tableViewPosts.delegate = self
+        feedView.tableViewPosts.dataSource = self
         
         feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
     }
@@ -104,5 +133,3 @@ class FeedViewController: UIViewController {
         }
     }
 }
-
-
