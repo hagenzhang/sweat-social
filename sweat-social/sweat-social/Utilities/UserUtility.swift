@@ -18,15 +18,15 @@ class FirebaseUserUtil {
         let targetRef = database.collection("users").document(targetUsername)
         let followerRef = database.collection("users").document(followerUsername)
         
-        print("RegisterFirebaseManager - \(followerUsername) set to Follow \(targetUsername)")
+        print("FirebaseUserUtil - \(followerUsername) set to Follow \(targetUsername)")
         
         targetRef.collection("followers").document(targetUsername).setData([
             "reference": followerRef
         ]) { error in
             if let error = error {
-                print("RegisterFirebaseManager -    Error adding follower: \(error.localizedDescription)")
+                print("FirebaseUserUtil -    Error adding follower: \(error.localizedDescription)")
             } else {
-                print("RegisterFirebaseManager -    Follower added successfully.")
+                print("FirebaseUserUtil -    Follower added successfully.")
             }
         }
     }
@@ -36,23 +36,23 @@ class FirebaseUserUtil {
         let targetRef = database.collection("users").document(targetUsername)
         let followerRef = database.collection("users").document(followerUsername)
         
-        print("RegisterFirebaseManager - \(followerUsername) set to UnFollow \(targetUsername)")
+        print("FirebaseUserUtil - \(followerUsername) set to UnFollow \(targetUsername)")
         
         // Remove the follower from the target user's Followers collection
         targetRef.collection("followers").document(followerUsername).delete { error in
             if error == nil {
-                print("RegisterFirebaseManager -    follower removed successfully")
+                print("FirebaseUserUtil -    follower removed successfully")
                 
                 // Remove the target user from the follower's Following collection
                 followerRef.collection("following").document(targetUsername).delete { error in
                     if error == nil {
-                        print("RegisterFirebaseManager -    target removed successfully")
+                        print("FirebaseUserUtil -    target removed successfully")
                     } else {
-                        print("RegisterFirebaseManager -    Error removing target from follower: \(error!.localizedDescription)")
+                        print("FirebaseUserUtil -    Error removing target from follower: \(error!.localizedDescription)")
                     }
                 }
             } else {
-                print("RegisterFirebaseManager -    Error removing follower from target: \(error!.localizedDescription)")
+                print("FirebaseUserUtil -    Error removing follower from target: \(error!.localizedDescription)")
             }
         }
     }
@@ -63,13 +63,13 @@ class FirebaseUserUtil {
         
         userRef.collection("followers").getDocuments { snapshot, error in
             if let error = error {
-                print("Error retrieving followers: \(error.localizedDescription)")
+                print("FirebaseUserUtil - Error retrieving followers: \(error.localizedDescription)")
             } else {
                 for document in snapshot?.documents ?? [] {
                     if let ref = document.get("reference") as? DocumentReference {
                         ref.getDocument { userDoc, error in
                             if let userDoc = userDoc, userDoc.exists {
-                                print("Follower: \(userDoc.data() ?? [:])")
+                                print("FirebaseUserUtil - Follower: \(userDoc.data() ?? [:])")
                             }
                         }
                     }
@@ -84,13 +84,13 @@ class FirebaseUserUtil {
         
         userRef.collection("following").getDocuments { snapshot, error in
             if let error = error {
-                print("Error retrieving following: \(error.localizedDescription)")
+                print("FirebaseUserUtil - Error retrieving following: \(error.localizedDescription)")
             } else {
                 for document in snapshot?.documents ?? [] {
                     if let ref = document.get("reference") as? DocumentReference {
                         ref.getDocument { userDoc, error in
                             if let userDoc = userDoc, userDoc.exists {
-                                print("Following: \(userDoc.data() ?? [:])")
+                                print("FirebaseUserUtil - Following: \(userDoc.data() ?? [:])")
                             }
                         }
                     }
@@ -101,19 +101,15 @@ class FirebaseUserUtil {
     
     // Retrieves all of the User Information in Firebase and Returns it as a Profile Struct.
     func getProfileInformation(username: String, completion: @escaping (Profile?) -> Void) {
-        let storage = Storage.storage()
         let database = Firestore.firestore()
         let userRef = database.collection("users").document(username)
-        
-        // Default profile photo
-        let defaultPhoto = UIImage(systemName: "person.crop.circle")
         
         // Fetch user document
         userRef.getDocument { document, error in
             if error == nil {
+                print("FirebaseUserUtil - Successful Retrieval of User Document")
+                
                 if let data = document?.data() {
-                    print("FirebaseUserUtil - Successful Retrieval of User Document")
-                    
                     let email = data["email"] as? String
                     let username = data["username"] as? String
                     
@@ -121,38 +117,23 @@ class FirebaseUserUtil {
                     self.fetchSubCollection(userRef: userRef, subCollection: "followers") { followers in
                         self.fetchSubCollection(userRef: userRef, subCollection: "following") { following in
                             
-                            // Retrieve profile photo
+                            // Retrieve profile photo info
                             if let photoURLString = data["photoURL"] as? String,
                                let photoURL = URL(string: photoURLString) {
                                 
-                                ImageUtility().fetchFirebaseImageFromURL(url: photoURL, storage: storage, completion: { image in
-                                    if let photo = image {
-                                        // Combine into Profile struct
-                                        let user = User(username: username!, email: email!, photoURL: photoURL)
-                                        let profile = Profile(user: user, photo: photo, followers: followers, following: following)
-                                        
-                                        print("FirebaseUserUtil - Successful Profile Creation (With Image)")
-                                        print("") // spacer in logs
-                                        
-                                        completion(profile)
-                                        
-                                    } else {
-                                        let user = User(username: username!, email: email!, photoURL: photoURL)
-                                        let profile = Profile(user: user, photo: defaultPhoto!, followers: followers, following: following)
-                                        
-                                        print("FirebaseUserUtil - Photo Ref Exists, but Failed To Be Retrieved!")
-                                        print("") // spacer in logs
-                                        
-                                        completion(profile)
-                                    }
-                                })
+                                let user = User(username: username!, email: email!, photoURL: photoURL)
+                                let profile = Profile(user: user, followers: followers, following: following)
+                                
+                                print("FirebaseUserUtil - Profile Successfully Created")
+                                completion(profile)
                                 
                             } else {
-                                // No profile photo, use default
-                                let user = User(username: username!, email: email!)
-                                let profile = Profile(user: user, photo: defaultPhoto!, followers: followers, following: following)
-                                print("FirebaseUserUtil - Successful Profile Creation (No Image)")
-                                print("") // spacer in logs
+                                
+                                print("FirebaseUserUtil - UnSuccessful Profile ImageRef Retrieval")
+                                
+                                let user = User(username: username!, email: email!, photoURL: nil)
+                                let profile = Profile(user: user, followers: followers, following: following)
+                                
                                 completion(profile)
                             }
                         }
@@ -208,14 +189,11 @@ struct User: Codable {
 
 struct Profile {
     var user: User
-    var profilePhoto: UIImage
     var followers: [String]
     var following: [String]
     
-    
-    init(user: User, photo: UIImage, followers: [String], following: [String]) {
+    init(user: User, followers: [String], following: [String]) {
         self.user = user
-        self.profilePhoto = photo
         self.followers = followers
         self.following = following
     }

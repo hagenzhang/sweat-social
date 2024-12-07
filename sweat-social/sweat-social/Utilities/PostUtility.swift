@@ -32,7 +32,6 @@ struct Post: Codable {
     }
 }
 
-
 class FirebasePostUtil {
     let database = Firestore.firestore()
     

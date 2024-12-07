@@ -11,23 +11,26 @@ import FirebaseFirestore
 import FirebaseStorage
 import UIKit
 
-class ImageUtility {
-    let storage = Storage.storage()
-    let database = Firestore.firestore()
-    
-    func fetchFirebaseImageFromURL(url: URL, storage: Storage, completion: @escaping (UIImage?) -> Void) {
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        print("ImageUtility - Successfully Fetched Image from URL: \(url)")
-                        completion(image)
+extension UIImageView {
+    //MARK: Borrowed from: https://www.hackingwithswift.com/example-code/uikit/how-to-load-a-remote-image-url-into-uiimageview
+    func loadRemoteImage(from url: URL?) {
+        if let url = url {
+            DispatchQueue.global().async { [weak self] in
+                if let data = try? Data(contentsOf: url) {
+                    if let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self?.image = image
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self?.image = UIImage(systemName: "person.fill")
+                        }
                     }
                 }
-            } else {
-                print("ImageUtility - Unable to Fetch Image from URL")
-                completion(nil)
             }
+        } else {
+            self.image = UIImage(systemName: "person.fill")
         }
+        
     }
 }

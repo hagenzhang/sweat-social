@@ -19,9 +19,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Profile"
-    
-        // profileScreen.tableViewPosts.delegate = self
-        // profileScreen.tableViewPosts.dataSource = self
         
         loadPosts()
     }
@@ -34,9 +31,9 @@ class ProfileViewController: UIViewController {
         let email = receivedPackage.user.email
         let following = receivedPackage.following
         let followers = receivedPackage.followers
-        let profilePhoto = receivedPackage.profilePhoto
         
-        self.profileScreen.avatarImg.image = profilePhoto
+        self.profileScreen.avatarImg.loadRemoteImage(from: receivedPackage.user.photoURL)
+        
         self.profileScreen.labelName.text = "\(username)"
         self.profileScreen.labelName.font = UIFont.boldSystemFont(ofSize: 24)
         self.profileScreen.labelEmail.text = "email: \(email)"

@@ -133,7 +133,7 @@ extension RegisterViewController {
                     
                 } else {
                     print("RegisterFirebaseManager - Error Adding User to Firestore!")
-                    print("RegisterFirebaseManager -    v\(String(describing: error))")
+                    print("RegisterFirebaseManager -    \(String(describing: error))")
                 }
             })
         } catch {
