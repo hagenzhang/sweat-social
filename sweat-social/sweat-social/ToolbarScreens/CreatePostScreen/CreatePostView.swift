@@ -17,7 +17,7 @@ class CreateView: UIView, UITextViewDelegate {
     let locationLabel = UILabel()
     let locationTextField = UITextField()
     
-    let caption = UILabel()
+    let captionLabel = UILabel()
     let captionTextField = UITextField()
 
     override init(frame: CGRect) {
@@ -25,6 +25,7 @@ class CreateView: UIView, UITextViewDelegate {
         setupSelectPic()
         setupTotalTimeRow()
         setupLocationRow()
+        setupCaptionRow()
         setupCreateTextView()
         initConstraints()
     }
@@ -61,15 +62,30 @@ class CreateView: UIView, UITextViewDelegate {
     }
     
     func setupLocationRow() {
-        locationLabel.text = "Location (Optional)"
+        locationLabel.text = "Location"
         locationLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(locationLabel)
 
+        locationTextField.placeholder = "(optional)"
         locationTextField.borderStyle = .roundedRect
         locationTextField.font = UIFont.systemFont(ofSize: 16)
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(locationTextField)
+    }
+    
+    func setupCaptionRow() {
+        captionLabel.text = "Caption"
+        captionLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(captionLabel)
+
+        captionTextField.placeholder = "(optional)"
+        captionTextField.borderStyle = .roundedRect
+        captionTextField.font = UIFont.systemFont(ofSize: 16)
+        captionTextField.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(captionTextField)
+        
     }
     
     func setupCreateTextView() {
@@ -77,7 +93,6 @@ class CreateView: UIView, UITextViewDelegate {
         createView.layer.borderWidth = 1
         createView.layer.cornerRadius = 8
         createView.font = UIFont.systemFont(ofSize: 16)
-        createView.textColor = .lightGray
         createView.delegate = self
         createView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(createView)
@@ -93,15 +108,6 @@ class CreateView: UIView, UITextViewDelegate {
             totalTimeLabel.topAnchor.constraint(equalTo: selectPic.bottomAnchor, constant: 16),
             totalTimeLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             totalTimeLabel.widthAnchor.constraint(equalToConstant: 100),
-
-
-            locationLabel.topAnchor.constraint(equalTo: totalTimeLabel.bottomAnchor, constant: 20),
-            locationLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            locationLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            locationTextField.centerYAnchor.constraint(equalTo: locationLabel.centerYAnchor),
-            locationTextField.leadingAnchor.constraint(equalTo: locationLabel.trailingAnchor, constant: 8),
-            locationTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             hoursTextField.centerYAnchor.constraint(equalTo: totalTimeLabel.centerYAnchor),
             hoursTextField.leadingAnchor.constraint(equalTo: locationTextField.leadingAnchor),
@@ -110,10 +116,22 @@ class CreateView: UIView, UITextViewDelegate {
             minutesTextField.centerYAnchor.constraint(equalTo: totalTimeLabel.centerYAnchor),
             minutesTextField.trailingAnchor.constraint(equalTo: locationTextField.trailingAnchor),
             minutesTextField.widthAnchor.constraint(equalTo: locationTextField.widthAnchor, multiplier: 0.49),
-            
-            minutesTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
-            createView.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 16),
+            locationLabel.topAnchor.constraint(equalTo: totalTimeLabel.bottomAnchor, constant: 20),
+            locationLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            locationLabel.widthAnchor.constraint(equalToConstant: 100),
+            locationTextField.centerYAnchor.constraint(equalTo: locationLabel.centerYAnchor),
+            locationTextField.leadingAnchor.constraint(equalTo: locationLabel.trailingAnchor, constant: 8),
+            locationTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            captionLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 20),
+            captionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            captionLabel.widthAnchor.constraint(equalToConstant: 100),
+            captionTextField.centerYAnchor.constraint(equalTo: captionLabel.centerYAnchor),
+            captionTextField.leadingAnchor.constraint(equalTo: captionLabel.trailingAnchor, constant: 8),
+            captionTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            createView.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 16),
             createView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             createView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             createView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)

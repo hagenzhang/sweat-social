@@ -42,7 +42,6 @@ class ProfileViewCell: UITableViewCell {
         cellImg.layer.cornerRadius = 10
         cellImg.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(cellImg)
-
     }
     
     func setupLabelTime(){
@@ -61,7 +60,6 @@ class ProfileViewCell: UITableViewCell {
     
     func initConstraints() {
         NSLayoutConstraint.activate([
-            
             wrapperCellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
             wrapperCellView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             wrapperCellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),

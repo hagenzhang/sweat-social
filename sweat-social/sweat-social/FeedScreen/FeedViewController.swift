@@ -13,15 +13,21 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseStorage
+import FirebaseFirestore
 
 
 class FeedViewController: UIViewController {
     let feedView = FeedView()
     var posts = [Post]()
     
+    let storage = Storage.storage()
+    let database = Firestore.firestore()
+    
 
     override func loadView() {
         view = feedView
+        fetchPosts()
     }
     
     override func viewDidLoad() {
@@ -58,11 +64,10 @@ class FeedViewController: UIViewController {
         feedView.tableViewPosts.dataSource = self
         
         feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
-        
-        fetchPosts()
     }
     
     func fetchPosts() {
+        /* This is good for the Profile Screen!
         FirebasePostUtil().getPostsByUser(username: "tester1") { [weak self] posts in
             guard let self = self else { return }
             self.posts = posts
@@ -72,6 +77,14 @@ class FeedViewController: UIViewController {
             self.posts = posts
             feedView.tableViewPosts.reloadData() // Example for UITableView
         }
+         */
+        
+        print("FeedViewController - Fetching Posts for Feed")
+        FirebasePostUtil().getPostsFromFollowedUsers(username: (FirebaseUserUtil.currentUser?.displayName)!, completion: { posts in
+            self.posts = posts
+            self.feedView.tableViewPosts.reloadData() // Example for UITableView
+        })
+        
     }
     
     

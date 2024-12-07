@@ -20,13 +20,20 @@ class FirebaseUserUtil {
         
         print("FirebaseUserUtil - \(followerUsername) set to Follow \(targetUsername)")
         
-        targetRef.collection("followers").document(targetUsername).setData([
-            "reference": followerRef
-        ]) { error in
-            if let error = error {
-                print("FirebaseUserUtil -    Error adding follower: \(error.localizedDescription)")
+        targetRef.collection("followers").document(targetUsername).setData(["reference": followerRef]) { error in
+            if error == nil {
+                print("FirebaseUserUtil -    Follower to Target added successfully.")
+                
+                followerRef.collection("following").document(targetUsername).setData(["reference": targetRef]) { error in
+                    if error == nil {
+                        print("FirebaseUserUtil -    Following from Follower added successfully.")
+                    } else {
+                        print("FirebaseUserUtil -    Error adding Following.")
+                    }
+                }
+                
             } else {
-                print("FirebaseUserUtil -    Follower added successfully.")
+                print("FirebaseUserUtil -    Error adding follower: \(error!.localizedDescription)")
             }
         }
     }

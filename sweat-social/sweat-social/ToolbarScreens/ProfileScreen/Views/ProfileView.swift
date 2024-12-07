@@ -15,8 +15,6 @@ class ProfileView: UIView {
     var separatorLine: UIView!
     var tableViewPosts: UITableView!
 
-    
-    //MARK: View initializer...
     override init(frame: CGRect) {
         super.init(frame: frame)
         
