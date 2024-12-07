@@ -10,6 +10,94 @@ import FirebaseStorage
 
 class FirebaseUserUtil {
     static var currentUser: FirebaseAuth.User?
+    let storage = Storage.storage()
+    let database = Firestore.firestore()
+    
+    // Function for adding a follower to a target user based on usernames.
+    func addFollowerToTarget(targetUsername: String, followerUsername: String) {
+        let targetRef = database.collection("users").document(targetUsername)
+        let followerRef = database.collection("users").document(followerUsername)
+        
+        print("RegisterFirebaseManager - \(followerUsername) set to Follow \(targetUsername)")
+        
+        targetRef.collection("followers").document(targetUsername).setData([
+            "reference": followerRef
+        ]) { error in
+            if let error = error {
+                print("RegisterFirebaseManager -    Error adding follower: \(error.localizedDescription)")
+            } else {
+                print("RegisterFirebaseManager -    Follower added successfully.")
+            }
+        }
+    }
+    
+    // Function for removing a follower from a target user based on usernames.
+    func removeFollowerFromTarget(targetUsername: String, followerUsername: String) {
+        let targetRef = database.collection("users").document(targetUsername)
+        let followerRef = database.collection("users").document(followerUsername)
+        
+        print("RegisterFirebaseManager - \(followerUsername) set to UnFollow \(targetUsername)")
+        
+        // Remove the follower from the target user's Followers collection
+        targetRef.collection("followers").document(followerUsername).delete { error in
+            if error == nil {
+                print("RegisterFirebaseManager -    follower removed successfully")
+                
+                // Remove the target user from the follower's Following collection
+                followerRef.collection("following").document(targetUsername).delete { error in
+                    if error == nil {
+                        print("RegisterFirebaseManager -    target removed successfully")
+                    } else {
+                        print("RegisterFirebaseManager -    Error removing target from follower: \(error!.localizedDescription)")
+                    }
+                }
+            } else {
+                print("RegisterFirebaseManager -    Error removing follower from target: \(error!.localizedDescription)")
+            }
+        }
+    }
+    
+    // Function to get a User's followers.
+    func getFollowers(username: String) {
+        let userRef = database.collection("users").document(username)
+        
+        userRef.collection("followers").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error retrieving followers: \(error.localizedDescription)")
+            } else {
+                for document in snapshot?.documents ?? [] {
+                    if let ref = document.get("reference") as? DocumentReference {
+                        ref.getDocument { userDoc, error in
+                            if let userDoc = userDoc, userDoc.exists {
+                                print("Follower: \(userDoc.data() ?? [:])")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Function to get who a User is following.
+    func getFollowing(username: String) {
+        let userRef = database.collection("users").document(username)
+        
+        userRef.collection("following").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error retrieving following: \(error.localizedDescription)")
+            } else {
+                for document in snapshot?.documents ?? [] {
+                    if let ref = document.get("reference") as? DocumentReference {
+                        ref.getDocument { userDoc, error in
+                            if let userDoc = userDoc, userDoc.exists {
+                                print("Following: \(userDoc.data() ?? [:])")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     // Retrieves all of the User Information in Firebase and Returns it as a Profile Struct.
     func getProfileInformation(username: String, completion: @escaping (Profile?) -> Void) {
@@ -37,8 +125,8 @@ class FirebaseUserUtil {
                             if let photoURLString = data["photoURL"] as? String,
                                let photoURL = URL(string: photoURLString) {
                                 
-                                self.fetchImage(url: photoURL, storage: storage) { profilePhoto in
-                                    if let photo = profilePhoto {
+                                ImageUtility().fetchFirebaseImageFromURL(url: photoURL, storage: storage, completion: { image in
+                                    if let photo = image {
                                         // Combine into Profile struct
                                         let user = User(username: username!, email: email!, photoURL: photoURL)
                                         let profile = Profile(user: user, photo: photo, followers: followers, following: following)
@@ -47,6 +135,7 @@ class FirebaseUserUtil {
                                         print("") // spacer in logs
                                         
                                         completion(profile)
+                                        
                                     } else {
                                         let user = User(username: username!, email: email!, photoURL: photoURL)
                                         let profile = Profile(user: user, photo: defaultPhoto!, followers: followers, following: following)
@@ -56,7 +145,8 @@ class FirebaseUserUtil {
                                         
                                         completion(profile)
                                     }
-                                }
+                                })
+                                
                             } else {
                                 // No profile photo, use default
                                 let user = User(username: username!, email: email!)
@@ -95,28 +185,6 @@ class FirebaseUserUtil {
             completion(ids)
         }
     }
-
-    private func fetchImage(url: URL, storage: Storage, completion: @escaping (UIImage?) -> Void) {
-        let path = url.path
-        let storageRef = storage.reference(withPath: path)
-        
-        storageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in // maxSize field for image here arbitrarily chosen
-            if let error = error {
-                print("FirebaseUserUtil - Error downloading image: \(error.localizedDescription)")
-                print("") // spacer in logs
-                completion(nil)
-                return
-            }
-            
-            if let data = data, let image = UIImage(data: data) {
-                completion(image)
-            } else {
-                print("FirebaseUserUtil - Unable to decode image data while fetching image")
-                print("") // spacer in logs
-                completion(nil)
-            }
-        }
-    }
 }
 
 struct User: Codable {
@@ -150,24 +218,5 @@ struct Profile {
         self.profilePhoto = photo
         self.followers = followers
         self.following = following
-    }
-}
-
-
-extension UIImageView {
-    // Borrowed from: https://www.hackingwithswift.com/example-code/uikit/how-to-load-a-remote-image-url-into-uiimageview
-    
-    // Renders an image from the given URL.
-    // Helper function for retrieving images inside of Firebase.
-    func loadRemoteImage(from url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
-        }
     }
 }

@@ -87,7 +87,7 @@ extension RegisterViewController {
             }
         })
     }
-
+    
     
     // Adds Name and Photo parameters to the User in Firebase Authentication.
     // This function gives our new User a username and a profile photo reference from Firebase Storage
@@ -133,7 +133,7 @@ extension RegisterViewController {
                     
                 } else {
                     print("RegisterFirebaseManager - Error Adding User to Firestore!")
-                    print("RegisterFirebaseManager -     \(String(describing: error))")
+                    print("RegisterFirebaseManager -    v\(String(describing: error))")
                 }
             })
         } catch {
@@ -143,86 +143,9 @@ extension RegisterViewController {
     
     // Function for testing purposes.
     func addAdminAsFollower(userUsername: String, adminUsername: String) {
-        self.addFollower(userUsername: userUsername, followerUsername: adminUsername)
-        self.addFollow(userUsername: userUsername, followerUsername: adminUsername)
+        FirebaseUserUtil().addFollowerToTarget(targetUsername: userUsername, followerUsername: adminUsername)
+        FirebaseUserUtil().addFollowerToTarget(targetUsername: adminUsername, followerUsername: userUsername)
     }
-
-    
-    // Function for adding a follower to a User based on usernames.
-    func addFollower(userUsername: String, followerUsername: String) {
-        let userRef = database.collection("users").document(userUsername)
-        let followerRef = database.collection("users").document(followerUsername)
-
-        userRef.collection("followers").document(followerUsername).setData([
-            "reference": followerRef
-        ]) { error in
-            if let error = error {
-                print("RegisterFirebaseManager -    Error adding follower: \(error.localizedDescription)")
-            } else {
-                print("RegisterFirebaseManager -    Follower added successfully.")
-            }
-        }
-    }
-
-    // Function for a User following another user based on usernames.
-    func addFollow(userUsername: String, followerUsername: String) {
-        let userRef = database.collection("users").document(userUsername)
-        let followingRef = database.collection("users").document(followerUsername)
-
-        userRef.collection("following").document(followerUsername).setData([
-            "reference": followingRef
-        ]) { error in
-            if let error = error {
-                print("RegisterFirebaseManager -    Error adding following: \(error.localizedDescription)")
-            } else {
-                print("RegisterFirebaseManager -    Following added successfully.")
-            }
-        }
-    }
-    
-    // CHANGE THESE TO USERNAME INSTEAD
-    // Function to get a User's followers.
-    func getFollowers(for userEmail: String) {
-        let userRef = database.collection("users").document(userEmail)
-        
-        userRef.collection("followers").getDocuments { snapshot, error in
-            if let error = error {
-                print("Error retrieving followers: \(error.localizedDescription)")
-            } else {
-                for document in snapshot?.documents ?? [] {
-                    if let ref = document.get("reference") as? DocumentReference {
-                        ref.getDocument { userDoc, error in
-                            if let userDoc = userDoc, userDoc.exists {
-                                print("Follower: \(userDoc.data() ?? [:])")
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Function to get who a User is following.
-    func getFollowing(for userEmail: String) {
-        let userRef = database.collection("users").document(userEmail)
-        
-        userRef.collection("following").getDocuments { snapshot, error in
-            if let error = error {
-                print("Error retrieving following: \(error.localizedDescription)")
-            } else {
-                for document in snapshot?.documents ?? [] {
-                    if let ref = document.get("reference") as? DocumentReference {
-                        ref.getDocument { userDoc, error in
-                            if let userDoc = userDoc, userDoc.exists {
-                                print("Following: \(userDoc.data() ?? [:])")
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     
     func areInputsValid() -> Bool {
         if registerView.textFieldUsername.text == "" {
@@ -258,5 +181,5 @@ extension RegisterViewController {
         return emailPred.evaluate(with: email)
     }
     
-
+    
 }

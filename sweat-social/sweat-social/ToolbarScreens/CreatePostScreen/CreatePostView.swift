@@ -6,14 +6,19 @@
 import UIKit
 
 class CreateView: UIView, UITextViewDelegate {
-    var selectPic: UIButton!
+    var selectPic = UIButton(type: .system)
+    
     let createView = UITextView()
+    
     let totalTimeLabel = UILabel()
     let hoursTextField = UITextField()
     let minutesTextField = UITextField()
+    
     let locationLabel = UILabel()
     let locationTextField = UITextField()
-    let placeholderText = "Enter details here (Optional)"
+    
+    let caption = UILabel()
+    let captionTextField = UITextField()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,7 +30,6 @@ class CreateView: UIView, UITextViewDelegate {
     }
 
     func setupSelectPic(){
-        selectPic = UIButton(type: .system)
         selectPic.setImage(UIImage(systemName: "camera.fill"), for: .normal)
         selectPic.contentHorizontalAlignment = .fill
         selectPic.contentVerticalAlignment = .fill
@@ -57,12 +61,11 @@ class CreateView: UIView, UITextViewDelegate {
     }
     
     func setupLocationRow() {
-        locationLabel.text = "Location"
+        locationLabel.text = "Location (Optional)"
         locationLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(locationLabel)
 
-        locationTextField.placeholder = "Enter location (Optional)"
         locationTextField.borderStyle = .roundedRect
         locationTextField.font = UIFont.systemFont(ofSize: 16)
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +77,6 @@ class CreateView: UIView, UITextViewDelegate {
         createView.layer.borderWidth = 1
         createView.layer.cornerRadius = 8
         createView.font = UIFont.systemFont(ofSize: 16)
-        createView.text = self.placeholderText
         createView.textColor = .lightGray
         createView.delegate = self
         createView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,19 +120,6 @@ class CreateView: UIView, UITextViewDelegate {
         ])
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == self.placeholderText {
-            textView.text = ""
-            textView.textColor = .black
-        }
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = self.placeholderText
-            textView.textColor = .lightGray
-        }
-    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

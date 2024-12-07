@@ -83,8 +83,9 @@ class FeedViewController: UIViewController {
     }
     
     @objc func createPost() {
-        // let cvController = CreateViewController()
-        // self.navigationController?.pushViewController(cvController, animated: true)
+        print("") // spacer in logs
+        let createViewController = CreateViewController()
+        self.navigationController?.pushViewController(createViewController, animated: true)
     }
     
     

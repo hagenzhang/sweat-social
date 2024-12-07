@@ -52,21 +52,10 @@ struct Post: Codable {
     var caption: String
     var exercises: String
     var username: String
-    var imageRef: URL?
+    var imageRef: URL
     var timeStamp: Timestamp
     
-    init(username: String, hours: String, mins: String, loc: String, caption: String, exercises: String, timestamp: Timestamp = Timestamp()) {
-        self.username = username
-        self.hours = hours
-        self.mins = mins
-        self.loc = loc
-        self.caption = caption
-        self.exercises = exercises
-        self.imageRef = nil
-        self.timeStamp = timestamp
-    }
-    
-    init(username: String, hours: String, mins: String, loc: String, caption: String, exercises: String, imageRef: URL?, timestamp: Timestamp = Timestamp()) {
+    init(username: String, hours: String, mins: String, loc: String, caption: String, exercises: String, imageRef: URL, timestamp: Timestamp = Timestamp()) {
         self.username = username
         self.hours = hours
         self.mins = mins

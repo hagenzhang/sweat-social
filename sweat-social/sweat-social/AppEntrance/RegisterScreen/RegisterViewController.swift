@@ -17,6 +17,7 @@ import PhotosUI
 class RegisterViewController: UIViewController {
     
     let registerView = RegisterView()
+    
     let storage = Storage.storage()
     let database = Firestore.firestore()
     

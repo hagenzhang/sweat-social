@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F3AD5C772D02E0D2009E634B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3AD5C762D02E0D2009E634B /* GoogleService-Info.plist */; };
+		F3DB2E092D03B0B800849FB5 /* CreateFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB2E082D03B0B800849FB5 /* CreateFirebaseManager.swift */; };
+		F3DB2E0B2D03BBA900849FB5 /* ImageUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB2E0A2D03BBA900849FB5 /* ImageUtility.swift */; };
 		F3F3D32C2CFF88EE00A83C7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D32B2CFF88EE00A83C7F /* AppDelegate.swift */; };
 		F3F3D32E2CFF88EE00A83C7F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D32D2CFF88EE00A83C7F /* SceneDelegate.swift */; };
 		F3F3D3302CFF88EE00A83C7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D32F2CFF88EE00A83C7F /* ViewController.swift */; };
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		F3AD5C762D02E0D2009E634B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F3DB2E082D03B0B800849FB5 /* CreateFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFirebaseManager.swift; sourceTree = "<group>"; };
+		F3DB2E0A2D03BBA900849FB5 /* ImageUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtility.swift; sourceTree = "<group>"; };
 		F3F3D3282CFF88EE00A83C7F /* sweat-social.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sweat-social.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3F3D32B2CFF88EE00A83C7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F3F3D32D2CFF88EE00A83C7F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 			children = (
 				F3F3D35C2CFF8CB400A83C7F /* UserUtility.swift */,
 				F3F3D37D2CFFE26300A83C7F /* PostUtility.swift */,
+				F3DB2E0A2D03BBA900849FB5 /* ImageUtility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			children = (
 				F3F3D3602CFF8D2B00A83C7F /* CreatePostView.swift */,
 				F3F3D3622CFF8D4C00A83C7F /* CreatePostViewController.swift */,
+				F3DB2E082D03B0B800849FB5 /* CreateFirebaseManager.swift */,
 			);
 			path = CreatePostScreen;
 			sourceTree = "<group>";
@@ -330,6 +336,7 @@
 				F3F3D3562CFF8C0E00A83C7F /* RegisterViewController.swift in Sources */,
 				F3F3D3722CFF8FB500A83C7F /* ProfileViewController.swift in Sources */,
 				F3F3D32C2CFF88EE00A83C7F /* AppDelegate.swift in Sources */,
+				F3DB2E092D03B0B800849FB5 /* CreateFirebaseManager.swift in Sources */,
 				F3F3D3542CFF8BE400A83C7F /* RegisterView.swift in Sources */,
 				F3F3D3802CFFE80400A83C7F /* FeedScreenTableViewExtension.swift in Sources */,
 				F3F3D3742CFF8FED00A83C7F /* ProfileView.swift in Sources */,
@@ -339,6 +346,7 @@
 				F3F3D37E2CFFE26300A83C7F /* PostUtility.swift in Sources */,
 				F3F3D36E2CFF8ED600A83C7F /* DisplayViewController.swift in Sources */,
 				F3F3D3632CFF8D4C00A83C7F /* CreatePostViewController.swift in Sources */,
+				F3DB2E0B2D03BBA900849FB5 /* ImageUtility.swift in Sources */,
 				F3F3D3662CFF8DF800A83C7F /* FeedViewController.swift in Sources */,
 				F3F3D3782CFF995B00A83C7F /* PhotoManager.swift in Sources */,
 				F3F3D3612CFF8D2B00A83C7F /* CreatePostView.swift in Sources */,

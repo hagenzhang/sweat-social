@@ -6,10 +6,15 @@
 import UIKit
 import PhotosUI
 import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
 
-/*
+
 class CreateViewController: UIViewController {
-
+    
+    let storage = Storage.storage()
+    let database = Firestore.firestore()
+    
     let createView = CreateView()
     var pickedImage:UIImage?
     
@@ -35,85 +40,27 @@ class CreateViewController: UIViewController {
         createView.selectPic.menu = getMenuImagePicker()
     }
     
-
     @objc func savePost() {
-        guard var hours = createView.hoursTextField.text, !hours.isEmpty else {
-            let alert = UIAlertController(title: "Text Error", message: "Please enter hours.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
-        
-        guard var mins = createView.minutesTextField.text, !mins.isEmpty else {
-            let alert = UIAlertController(title: "Text Error", message: "Please enter minutes.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
-        
-        if Int(mins)! > 59 {
-            var tempMins = Int(mins)!
-            var tempHours = Int(hours)!
-            
-            tempHours += Int(floor(Double(tempMins) / 60.0))
-            tempMins = (tempMins % 60)
-            
-            hours = String(tempHours)
-            mins = String(tempMins)
-        }
-        
-        var loc = (createView.locationTextField.text)!
-        if loc.isEmpty {
-            loc = ""
-        }
-        
-        var details = (createView.createView.text)!
-        if details.isEmpty || details == "Enter details here (Optional)"{
-            details = ""
-        }
-        
-        let curDT = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .medium
-        
-        var imageData = Data()
-
-        if pickedImage != nil {
-            imageData = pickedImage!.jpegData(compressionQuality: 0.9)!
-        } else {
-            imageData =  UIImage(systemName: "photo.fill")!.jpegData(compressionQuality: 0.9)!
-        }
-        pickedImage = nil
-        
-        self.cloudinary.createUploader().upload(data: imageData, uploadPreset: "fsreydnl", completionHandler:  { result, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                print("Error details: \(error.userInfo)")
-                print(imageData)
-                
-            } else if let result = result {
-                let publicId = result.publicId
-                let secureUrl = result.secureUrl
-                let createdAt = Date()
-                let metaData = ImageMetadata(publicId: publicId!, url: secureUrl!, createdAt: createdAt)
-                
-                let postCollection = Firestore.firestore().collection("users").document(FirebaseUtil.currentUser!.email!).collection("posts").document(curDT.description)
-                do {
-                    let tempPost = Post(hours: hours, mins: mins, loc: loc, message: details, image: metaData)
-                    try postCollection.setData(from: tempPost, completion: {(error) in
-                        if error == nil {
-                            print("Added post to firestore")
-                        }
-                    })
-                    self.navigationController?.popViewController(animated: true)
-                } catch {
-                    print("Error adding post!")
-                }
+        developPostStruct(completion: { post in
+            if let post = post {
+                FirebasePostUtil().uploadPost(post: post, completion: { success in
+                    if success {
+                        print("CreatePostViewController - Post Upload Successful!")
+                        
+                        // probably want to reload data here!
+                        
+                        self.navigationController?.popViewController(animated: true)
+                        
+                    } else {
+                        print("CreatePostViewController - Post Upload Failed!")
+                    }
+                })
+            } else {
+                print("CreatePostViewController - Post is NIL, could not save!")
             }
         })
     }
-
+    
     
     func getMenuImagePicker() -> UIMenu{
         let menuItems = [
@@ -124,7 +71,6 @@ class CreateViewController: UIViewController {
                 self.pickPhotoFromGallery()
             })
         ]
-        
         return UIMenu(title: "Select source", children: menuItems)
     }
     
@@ -148,10 +94,9 @@ class CreateViewController: UIViewController {
     }
     
     @objc func hideKeyboardOnTap(){
-        //MARK: removing the keyboard from screen...
         view.endEditing(true)
     }
-
+    
 }
 
 extension CreateViewController:PHPickerViewControllerDelegate{
@@ -195,4 +140,3 @@ extension CreateViewController: UINavigationControllerDelegate, UIImagePickerCon
         }
     }
 }
-*/
