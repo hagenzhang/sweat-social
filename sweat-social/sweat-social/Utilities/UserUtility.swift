@@ -16,7 +16,7 @@ class FirebaseUserUtil {
     
     
     // Returns a list of usernames in Firebase that matches the search query.
-    func findUserFromQuery(query: String, completion: @escaping (([User]) -> Void)) {
+    func findUsersFromQuery(query: String, completion: @escaping (([User]) -> Void)) {
         let usersRef = database.collection("users")
         
         print("UserUtility - Search for users with query: \(query)")

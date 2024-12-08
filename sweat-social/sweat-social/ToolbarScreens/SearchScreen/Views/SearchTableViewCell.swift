@@ -60,13 +60,17 @@ class SearchTableViewCell: UITableViewCell {
             
             profileImage.topAnchor.constraint(equalTo: wrapperCellView.topAnchor, constant: 8),
             profileImage.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 8),
-            profileImage.widthAnchor.constraint(equalToConstant: 60),
-            profileImage.heightAnchor.constraint(equalToConstant: 60),
+            profileImage.centerYAnchor.constraint(equalTo: wrapperCellView.centerYAnchor),
+            profileImage.widthAnchor.constraint(equalToConstant: 32),
+            profileImage.heightAnchor.constraint(equalToConstant: 32),
             
             usernameLabel.topAnchor.constraint(equalTo: wrapperCellView.topAnchor, constant: 8),
             usernameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 12),
             usernameLabel.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor, constant: -8),
             usernameLabel.heightAnchor.constraint(equalToConstant: 30),
+            usernameLabel.centerYAnchor.constraint(equalTo: wrapperCellView.centerYAnchor),
+            
+            wrapperCellView.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
     

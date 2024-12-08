@@ -40,7 +40,7 @@ class SearchScreenView: UIView {
     
     func setupQueryResultTable() {
         queryResultsTable = UITableView()
-        queryResultsTable.register(ProfileCellView.self, forCellReuseIdentifier: "searchTable")
+        queryResultsTable.register(SearchTableViewCell.self, forCellReuseIdentifier: "searchTable")
         queryResultsTable.separatorStyle = .none
         queryResultsTable.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(queryResultsTable)

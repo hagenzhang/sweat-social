@@ -12,6 +12,8 @@ class ProfileViewController: UIViewController {
     var posts = [Post]()
     let database = Firestore.firestore()
     
+    var profileViewUser: User!
+    
     override func loadView() {
         view = profileScreen
     }
@@ -27,6 +29,8 @@ class ProfileViewController: UIViewController {
     
     // Assigns the ProfileView fields based on the given profile.
     func unpackProfile(receivedPackage: Profile) {
+        
+        self.profileViewUser = receivedPackage.user
         
         let username = receivedPackage.user.username
         let email = receivedPackage.user.email
@@ -45,7 +49,8 @@ class ProfileViewController: UIViewController {
     }
     
     func loadPosts() {
-        let username:String = (FirebaseUserUtil.currentUser?.displayName)!
+        let username:String = self.profileViewUser.username
+        
         self.posts.removeAll()
         
         print("ProfileViewController - Fetching User's Posts")
@@ -76,6 +81,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ProfileViewController - Clicked on a Cell @ indexPath \(indexPath)!")
+        
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         
         /*
         let sendPost = Post(hours: posts[indexPath.row].hours,
