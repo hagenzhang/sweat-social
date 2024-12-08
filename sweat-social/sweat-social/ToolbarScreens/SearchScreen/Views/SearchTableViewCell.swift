@@ -2,8 +2,6 @@
 //  SearchTableViewCell.swift
 //  sweat-social
 //
-//  Created by Hagen Zhang on 12/8/24.
-//
 
 import UIKit
 
