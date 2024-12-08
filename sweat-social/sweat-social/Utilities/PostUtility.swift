@@ -233,4 +233,52 @@ class FirebasePostUtil {
         
     }
     
+    func didUserLikePost(postId: String, username: String, completion: @escaping (Bool) -> Void) {
+        /// TODO
+    }
+    
+    func getPostLikeCount(postId: String, completion: @escaping (Int) -> Void) {
+        let usersLikedRef = database.collection("posts").document(postId).collection("usersLikedRef")
+        
+        usersLikedRef.getDocuments { (querySnapshot, error) in
+            if error == nil {
+                let count = querySnapshot?.documents.count ?? 0
+                completion(count)
+            } else {
+                print("Error getting document count: \(error!.localizedDescription)")
+                completion(0)
+            }
+        }
+    }
+    
+    func addLikeToPost(postId: String, username: String, completion: @escaping (Bool) -> Void) {
+        print("PostUtility - Adding Like From \(username) to Post: \(postId)")
+        
+        let postLikesRef = database.collection("posts").document(postId).collection("usersLikedRef")
+        
+        postLikesRef.document(username).setData(["username": username]) { error in
+            if error == nil {
+                print("PostUtility -    Like added to Post successfully.")
+                completion(true)
+            } else {
+                print("FirebaseUserUtil -    Error adding like: \(error!.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
+    
+    func removeLikeFromPost(postId: String, username: String, completion: @escaping (Bool) -> Void) {
+        print("PostUtility - Removing Like From \(username) to Post: \(postId)")
+        let likeDocumentRef = database.collection("posts").document(postId).collection("usersLikedRef").document(username)
+        
+        likeDocumentRef.delete { error in
+            if error == nil {
+                print("PostUtility -    Like Removed from Post Successfully.")
+                completion(true)
+            } else {
+                print("FirebaseUserUtil -    Error Removing Like: \(error!.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
 }

@@ -30,8 +30,15 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         
         displayView.loadPostDetails(post: posts[indexPath.row])
         
-        self.navigationController?.pushViewController(displayView, animated: true)
+        // FOR TESTING ONLY, REMOVE WHEN DONE
+        FirebasePostUtil().addLikeToPost(postId: posts[indexPath.row].id, username: "admin", completion: { success in
+            FirebasePostUtil().getPostLikeCount(postId: self.posts[indexPath.row].id, completion: { likes in
+                    print("Post Like Count: \(likes)")
+            })
+        })
+
         
+        self.navigationController?.pushViewController(displayView, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
