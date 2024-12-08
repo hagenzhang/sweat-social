@@ -77,7 +77,6 @@ class PostTableViewCell: UITableViewCell {
     
     func setupCaption() {
         caption = UILabel()
-        
         caption.text = "Caption"
         caption.textColor = .black
         caption.font = caption.font?.withSize(12)

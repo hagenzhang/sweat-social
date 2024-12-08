@@ -66,8 +66,8 @@ extension CreateViewController {
                                                 loc: location,
                                                 caption: caption,
                                                 exercises: details,
-                                                imageRef: url!)
-                                
+                                                imageRef: url!,
+                                                likes: []) // all posts start with 0 likes
                                 completion(post)
                             } else {
                                 print("CreateFirebaseManager -    Error Getting downloadURL")

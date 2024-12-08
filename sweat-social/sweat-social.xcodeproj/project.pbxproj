@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		F3AD5C772D02E0D2009E634B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3AD5C762D02E0D2009E634B /* GoogleService-Info.plist */; };
+		F3BBEFE62D058A8A00FFBB98 /* SearchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBEFE52D058A8A00FFBB98 /* SearchScreenViewController.swift */; };
+		F3BBEFE92D058AA800FFBB98 /* SearchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBEFE82D058AA800FFBB98 /* SearchScreenView.swift */; };
+		F3BBEFEB2D058EAF00FFBB98 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBEFEA2D058EAF00FFBB98 /* SearchTableViewCell.swift */; };
 		F3DB2E092D03B0B800849FB5 /* CreateFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB2E082D03B0B800849FB5 /* CreateFirebaseManager.swift */; };
 		F3DB2E0B2D03BBA900849FB5 /* ImageUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB2E0A2D03BBA900849FB5 /* ImageUtility.swift */; };
 		F3F3D32C2CFF88EE00A83C7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D32B2CFF88EE00A83C7F /* AppDelegate.swift */; };
@@ -43,6 +46,9 @@
 
 /* Begin PBXFileReference section */
 		F3AD5C762D02E0D2009E634B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F3BBEFE52D058A8A00FFBB98 /* SearchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenViewController.swift; sourceTree = "<group>"; };
+		F3BBEFE82D058AA800FFBB98 /* SearchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenView.swift; sourceTree = "<group>"; };
+		F3BBEFEA2D058EAF00FFBB98 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		F3DB2E082D03B0B800849FB5 /* CreateFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFirebaseManager.swift; sourceTree = "<group>"; };
 		F3DB2E0A2D03BBA900849FB5 /* ImageUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtility.swift; sourceTree = "<group>"; };
 		F3F3D3282CFF88EE00A83C7F /* sweat-social.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sweat-social.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +95,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F3BBEFE42D058A7100FFBB98 /* SearchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				F3BBEFE72D058A9200FFBB98 /* Views */,
+				F3BBEFE52D058A8A00FFBB98 /* SearchScreenViewController.swift */,
+			);
+			path = SearchScreen;
+			sourceTree = "<group>";
+		};
+		F3BBEFE72D058A9200FFBB98 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F3BBEFE82D058AA800FFBB98 /* SearchScreenView.swift */,
+				F3BBEFEA2D058EAF00FFBB98 /* SearchTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F3BBEFED2D0596A300FFBB98 /* NotificationScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NotificationScreen;
+			sourceTree = "<group>";
+		};
 		F3DB2E072D036E0500849FB5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +270,8 @@
 		F3F3D3702CFF8F2B00A83C7F /* ToolbarScreens */ = {
 			isa = PBXGroup;
 			children = (
+				F3BBEFED2D0596A300FFBB98 /* NotificationScreen */,
+				F3BBEFE42D058A7100FFBB98 /* SearchScreen */,
 				F3F3D36F2CFF8F0700A83C7F /* ProfileScreen */,
 				F3F3D35F2CFF8D0700A83C7F /* CreatePostScreen */,
 			);
@@ -335,9 +368,11 @@
 				F3F3D3462CFF8A7300A83C7F /* LoginFirebaseManager.swift in Sources */,
 				F3F3D3562CFF8C0E00A83C7F /* RegisterViewController.swift in Sources */,
 				F3F3D3722CFF8FB500A83C7F /* ProfileViewController.swift in Sources */,
+				F3BBEFEB2D058EAF00FFBB98 /* SearchTableViewCell.swift in Sources */,
 				F3F3D32C2CFF88EE00A83C7F /* AppDelegate.swift in Sources */,
 				F3DB2E092D03B0B800849FB5 /* CreateFirebaseManager.swift in Sources */,
 				F3F3D3542CFF8BE400A83C7F /* RegisterView.swift in Sources */,
+				F3BBEFE92D058AA800FFBB98 /* SearchScreenView.swift in Sources */,
 				F3F3D3802CFFE80400A83C7F /* FeedScreenTableViewExtension.swift in Sources */,
 				F3F3D3742CFF8FED00A83C7F /* ProfileView.swift in Sources */,
 				F3F3D3442CFF8A0F00A83C7F /* LoginView.swift in Sources */,
@@ -348,6 +383,7 @@
 				F3F3D3632CFF8D4C00A83C7F /* CreatePostViewController.swift in Sources */,
 				F3DB2E0B2D03BBA900849FB5 /* ImageUtility.swift in Sources */,
 				F3F3D3662CFF8DF800A83C7F /* FeedViewController.swift in Sources */,
+				F3BBEFE62D058A8A00FFBB98 /* SearchScreenViewController.swift in Sources */,
 				F3F3D3782CFF995B00A83C7F /* PhotoManager.swift in Sources */,
 				F3F3D3612CFF8D2B00A83C7F /* CreatePostView.swift in Sources */,
 			);

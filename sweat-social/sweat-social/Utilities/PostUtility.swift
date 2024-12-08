@@ -20,7 +20,13 @@ struct Post: Codable {
     var imageRef: URL
     var timeStamp: Timestamp
     
-    init(username: String, hours: String, mins: String, loc: String, caption: String, exercises: String, imageRef: URL, timestamp: Timestamp = Timestamp()) {
+    var likes: [String] // Array of Strings, stores the usernames of the users who have liked the post
+    
+    init(username: String, hours: String, mins: String, 
+         loc: String, caption: String, exercises: String, 
+         imageRef: URL, timestamp: Timestamp = Timestamp(),
+         likes: [String]) {
+        
         self.username = username
         self.hours = hours
         self.mins = mins
@@ -29,6 +35,7 @@ struct Post: Codable {
         self.imageRef = imageRef
         self.exercises = exercises
         self.timeStamp = timestamp
+        self.likes = likes
     }
 }
 

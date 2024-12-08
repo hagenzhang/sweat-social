@@ -15,7 +15,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "posts", for: indexPath) as! PostTableViewCell
         
-        cell.caption.text = posts[indexPath.row].exercises
+        cell.caption.text = posts[indexPath.row].caption
         cell.nameLabel.text = posts[indexPath.row].username
         cell.postImage.loadRemoteImage(from: posts[indexPath.row].imageRef)
         

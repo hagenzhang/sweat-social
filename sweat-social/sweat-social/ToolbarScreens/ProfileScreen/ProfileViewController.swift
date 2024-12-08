@@ -65,7 +65,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! ProfileViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! ProfileCellView
         
         cell.labelTime.text = self.posts[indexPath.row].hours + " hours " + self.posts[indexPath.row].mins + " mins"
         cell.labelLocation.text = self.posts[indexPath.row].loc

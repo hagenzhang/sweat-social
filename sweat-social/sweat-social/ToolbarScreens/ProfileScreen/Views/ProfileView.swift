@@ -77,7 +77,7 @@ class ProfileView: UIView {
     
     func setupTableViewPosts(){
         tableViewPosts = UITableView()
-        tableViewPosts.register(ProfileViewCell.self, forCellReuseIdentifier: "postTable")
+        tableViewPosts.register(ProfileCellView.self, forCellReuseIdentifier: "postTable")
         tableViewPosts.separatorStyle = .none
         tableViewPosts.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(tableViewPosts)
@@ -122,6 +122,5 @@ class ProfileView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 

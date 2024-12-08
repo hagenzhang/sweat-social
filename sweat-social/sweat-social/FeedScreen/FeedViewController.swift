@@ -24,11 +24,13 @@ class FeedViewController: UIViewController {
     let storage = Storage.storage()
     let database = Firestore.firestore()
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        globalFeedSelected()
+    }
+    
     override func loadView() {
         view = feedView
-        
-        globalFeedSelected()
     }
     
     override func viewDidLoad() {
@@ -62,7 +64,6 @@ class FeedViewController: UIViewController {
         
         feedView.tableViewPosts.delegate = self
         feedView.tableViewPosts.dataSource = self
-        
         feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
         
         feedView.globalFeedButton.addTarget(self, action: #selector(globalFeedSelected), for: .touchUpInside)
@@ -87,6 +88,7 @@ class FeedViewController: UIViewController {
     
     
     func fetchGlobalPosts() {
+        print("") // spacer in logs
         print("FeedViewController - Fetching Posts for Global Feed")
         
         FirebasePostUtil().getGlobalPosts(completion: { posts in
@@ -98,6 +100,7 @@ class FeedViewController: UIViewController {
     }
     
     func fetchForYouPosts() {
+        print("") // spacer in logs
         print("FeedViewController - Fetching Posts for For You Feed")
         
         FirebasePostUtil().getPostsFromFollowedUsers(username: (FirebaseUserUtil.currentUser?.displayName)!, completion: { posts in
@@ -128,8 +131,6 @@ class FeedViewController: UIViewController {
             } else {
                 print("FeedViewController - Failed to Define Profile!")
             }
-            
-            
         })
     }
     
@@ -141,9 +142,9 @@ class FeedViewController: UIViewController {
     
     
     @objc func toSearchScreen() {
-        // TODO
-        print("ToSearchScreen: Not Yet Implemented!")
         print("") // spacer in logs
+        let searchScreenController = SearchScreenViewController()
+        self.navigationController?.pushViewController(searchScreenController, animated: true)
     }
     
     @objc func firebaseLogOut() {

@@ -5,7 +5,7 @@
 
 import UIKit
 
-class ProfileViewCell: UITableViewCell {
+class ProfileCellView: UITableViewCell {
     var wrapperCellView: UIView!
     var cellImg: UIImageView!
     var labelTime: UILabel!

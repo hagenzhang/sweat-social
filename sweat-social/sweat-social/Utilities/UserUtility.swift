@@ -13,6 +13,40 @@ class FirebaseUserUtil {
     let storage = Storage.storage()
     let database = Firestore.firestore()
     
+    
+    
+    // Returns a list of usernames in Firebase that matches the search query.
+    func findUserFromQuery(query: String, completion: @escaping (([User]) -> Void)) {
+        let usersRef = database.collection("users")
+        
+        print("UserUtility - Search for users with query: \(query)")
+              
+        // Perform a query to fetch users whose usernames start with the search query
+        let searchEnd = query + "\u{f8ff}"
+        usersRef
+            .whereField("username", isGreaterThanOrEqualTo: query)
+            .whereField("username", isLessThanOrEqualTo: searchEnd)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("UserUtility - Error fetching users: \(error.localizedDescription)")
+                    completion([])
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("UserUtility - No users found.")
+                    completion([])
+                    return
+                }
+                
+                // Decode the users into User objects
+                let users = documents.compactMap { try? $0.data(as: User.self) }
+                print("UserUtility - Found \(users.count) users matching query '\(query)'")
+                completion(users)
+            }
+    }
+    
+    
     // Function for adding a follower to a target user based on usernames.
     func addFollowerToTarget(targetUsername: String, followerUsername: String) {
         let targetRef = database.collection("users").document(targetUsername)
@@ -194,6 +228,7 @@ struct User: Codable {
     }
 }
 
+// A remnant of old code, this can be combined with User now
 struct Profile {
     var user: User
     var followers: [String]
