@@ -234,7 +234,25 @@ class FirebasePostUtil {
     }
     
     func didUserLikePost(postId: String, username: String, completion: @escaping (Bool) -> Void) {
-        /// TODO
+        let usersLikedRef = database.collection("posts").document(postId).collection("usersLikedRef")
+        
+        usersLikedRef.document(username).getDocument { (documentSnapshot, error) in
+            if error == nil {
+                if let document = documentSnapshot, document.exists {
+                    // User has liked the post
+                    completion(true)
+                } else {
+                    // User has not liked the post
+                    completion(false)
+                }
+                
+            } else {
+                print("Error checking if user liked the post: \(error!.localizedDescription)")
+                completion(false)
+                return
+            }
+        }
+        
     }
     
     func getPostLikeCount(postId: String, completion: @escaping (Int) -> Void) {

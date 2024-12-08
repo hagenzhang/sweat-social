@@ -17,9 +17,8 @@ class PostTableViewCell: UITableViewCell {
     
     // handles the caption section
     var likedSymbol: UIImageView!
+    var likedCountLabel: UILabel!
     var caption: UILabel!
-    
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,7 +52,6 @@ class PostTableViewCell: UITableViewCell {
     
     func setupNameLabel() {
         nameLabel = UILabel()
-        nameLabel.text = "placeholder name"
         nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(nameLabel)
@@ -73,11 +71,15 @@ class PostTableViewCell: UITableViewCell {
         likedSymbol = UIImageView(image: UIImage(systemName: "heart"))
         likedSymbol.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(likedSymbol)
+        
+        likedCountLabel = UILabel()
+        likedCountLabel.font = UIFont.systemFont(ofSize: 12)
+        likedCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        wrapperCellView.addSubview(likedCountLabel)
     }
     
     func setupCaption() {
         caption = UILabel()
-        caption.text = "Caption"
         caption.textColor = .black
         caption.font = caption.font?.withSize(12)
         caption.translatesAutoresizingMaskIntoConstraints = false
@@ -107,6 +109,9 @@ class PostTableViewCell: UITableViewCell {
             likedSymbol.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 5),
             likedSymbol.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 5),
             likedSymbol.heightAnchor.constraint(equalToConstant: 20),
+            
+            likedCountLabel.centerYAnchor.constraint(equalTo: likedSymbol.centerYAnchor),
+            likedCountLabel.leadingAnchor.constraint(equalTo: likedSymbol.trailingAnchor, constant: 5),
             
             caption.topAnchor.constraint(equalTo: likedSymbol.bottomAnchor, constant: 5),
             caption.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 5),

@@ -19,6 +19,18 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         cell.nameLabel.text = posts[indexPath.row].username
         cell.postImage.loadRemoteImage(from: posts[indexPath.row].imageRef)
         
+        FirebasePostUtil().getPostLikeCount(postId: self.posts[indexPath.row].id, completion: { likes in
+            cell.likedCountLabel.text = "\(likes)"
+        })
+        
+        FirebasePostUtil().didUserLikePost(postId: self.posts[indexPath.row].id, username: FirebaseUserUtil.currentUser!.displayName!, completion: { liked in
+            if liked {
+                cell.likedSymbol.image = UIImage(systemName: "heart.fill")
+            } else {
+                cell.likedSymbol.image = UIImage(systemName: "heart")
+            }
+        })
+        
         return cell
     }
     
@@ -29,14 +41,6 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         let displayView = DisplayViewController()
         
         displayView.loadPostDetails(post: posts[indexPath.row])
-        
-        // FOR TESTING ONLY, REMOVE WHEN DONE
-        FirebasePostUtil().addLikeToPost(postId: posts[indexPath.row].id, username: "admin", completion: { success in
-            FirebasePostUtil().getPostLikeCount(postId: self.posts[indexPath.row].id, completion: { likes in
-                    print("Post Like Count: \(likes)")
-            })
-        })
-
         
         self.navigationController?.pushViewController(displayView, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

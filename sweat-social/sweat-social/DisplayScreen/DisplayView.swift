@@ -129,7 +129,7 @@ class DisplayView: UIView {
             totalTimeValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             locationValueLabel.centerYAnchor.constraint(equalTo: locationLabel.centerYAnchor),
-            locationValueLabel.leadingAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -74),
+            locationValueLabel.leadingAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -70),
             locationValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             messageValueLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
