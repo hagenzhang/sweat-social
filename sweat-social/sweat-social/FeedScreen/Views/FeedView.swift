@@ -55,6 +55,7 @@ class FeedView: UIView {
         tableViewPosts.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(tableViewPosts)
     }
+    
     func initConstraints(){
         NSLayoutConstraint.activate([
             globalFeedButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
@@ -71,7 +72,6 @@ class FeedView: UIView {
             tableViewPosts.bottomAnchor.constraint(equalTo: toolbar.topAnchor),
             tableViewPosts.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             tableViewPosts.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            
         ])
     }
     

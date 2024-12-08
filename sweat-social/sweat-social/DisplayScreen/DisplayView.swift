@@ -13,6 +13,9 @@ class DisplayView: UIView {
     let postImage: UIImageView! = UIImageView()
     let caption: UILabel = UILabel()
     
+    var likeButton: UIButton! = UIButton(type: .system)
+    var likedCountLabel: UILabel! = UILabel()
+    
     let totalTimeLabel = UILabel()
     let totalTimeValueLabel = UILabel()
     
@@ -28,6 +31,7 @@ class DisplayView: UIView {
         setupScrollView()
         setupPostImage()
         setupCaption()
+        setupLikeSection()
         setupTotalTimeRow()
         setupLocationRow()
         setupMessageView()
@@ -52,6 +56,16 @@ class DisplayView: UIView {
     func setupCaption() {
         caption.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(caption)
+    }
+    
+    func setupLikeSection() {
+        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(likeButton)
+        
+        likedCountLabel.font = UIFont.systemFont(ofSize: 12)
+        likedCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(likedCountLabel)
     }
 
     func setupTotalTimeRow() {
@@ -109,7 +123,14 @@ class DisplayView: UIView {
             postImage.heightAnchor.constraint(equalToConstant: 300),
             postImage.widthAnchor.constraint(equalToConstant: 300),
             
-            caption.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 16),
+            likeButton.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 8),
+            likeButton.leadingAnchor.constraint(equalTo: postImage.leadingAnchor),
+            
+            likedCountLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 8),
+            likedCountLabel.centerYAnchor.constraint(equalTo: likeButton.centerYAnchor),
+            likedCountLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 4),
+            
+            caption.topAnchor.constraint(equalTo: likeButton.bottomAnchor, constant: 16),
             caption.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
             totalTimeLabel.topAnchor.constraint(equalTo: caption.bottomAnchor, constant: 16),

@@ -19,6 +19,10 @@ class SearchScreenViewController: UIViewController {
         
         title = "Search For Users"
         
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardOnTap))
+        tapRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapRecognizer)
+        
         searchScreenView.queryResultsTable.delegate = self
         searchScreenView.queryResultsTable.dataSource = self
         
@@ -35,6 +39,10 @@ class SearchScreenViewController: UIViewController {
         } else {
             print("SearchScreenViewController: tried to run empty query")
         }
+    }
+    
+    @objc func hideKeyboardOnTap(){
+        view.endEditing(true)
     }
 
 }
