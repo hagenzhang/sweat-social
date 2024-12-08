@@ -25,6 +25,8 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     // Handles clicking on a cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("FeedScreenTableViewExtension - Clicked on a Cell @ indexPath \(indexPath)!")
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

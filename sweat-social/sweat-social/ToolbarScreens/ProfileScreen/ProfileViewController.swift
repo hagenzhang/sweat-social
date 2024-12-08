@@ -20,7 +20,8 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         title = "Profile"
         
-        loadPosts()
+        profileScreen.tableViewPosts.delegate = self
+        profileScreen.tableViewPosts.dataSource = self
     }
     
     
@@ -39,20 +40,21 @@ class ProfileViewController: UIViewController {
         self.profileScreen.labelEmail.text = "email: \(email)"
         self.profileScreen.labelFollowing.text = "Following: \(following.count)"
         self.profileScreen.labelFollowers.text = "Followers: \(followers.count)"
+        
+        loadPosts()
     }
     
     func loadPosts() {
         let username:String = (FirebaseUserUtil.currentUser?.displayName)!
+        self.posts.removeAll()
         
         print("ProfileViewController - Fetching User's Posts")
         
-        FirebasePostUtil().getPostsByUser(username: username) { [weak self] posts in
-            guard let self = self else { return }
-            self.posts = posts
+        FirebasePostUtil().getPostsByUser(username: username) { posts in
             print("ProfileViewController - Posts fetched: \(self.posts)")
-            
             // Reload your UI
-            profileScreen.tableViewPosts.reloadData()
+            self.posts = posts
+            self.profileScreen.tableViewPosts.reloadData()
         }
     }
 }

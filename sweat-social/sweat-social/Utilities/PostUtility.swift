@@ -114,14 +114,13 @@ class FirebasePostUtil {
             }
         }
     }
-
     
-    // Retrieves all of the Posts from all of the Users that a Target User Follows.
     func getPostsFromFollowedUsers(username: String, completion: @escaping ([Post]) -> Void) {
         let firestore = Firestore.firestore()
         var posts: [Post] = []
-        
-        // Fetch the list of users the current user is following
+        let group = DispatchGroup() // To synchronize multiple async calls
+
+        // Fetching the list of users the current user is following
         let followingRef = firestore.collection("users").document(username).collection("following")
         
         followingRef.getDocuments { (querySnapshot, error) in
@@ -137,49 +136,66 @@ class FirebasePostUtil {
                 return
             }
             
-            let followingEmails = documents.compactMap { $0.documentID }
+            let followingUsernames = documents.compactMap { $0.documentID }
+            print("PostUtility -   Currently following \(followingUsernames.count) people")
             
-            if followingEmails.isEmpty {
+            if followingUsernames.isEmpty {
                 print("PostUtility -    Current user is not following anyone.")
                 completion([])
                 return
             }
             
-            // Fetch posts for each followed user
-            let postsRef = firestore.collection("posts")
-            
-            postsRef.whereField("userRef", in: followingEmails).getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    print("PostUtility -    Error fetching posts: \(error.localizedDescription)")
-                    completion([])
-                    return
-                }
+            // Fetching posts for each followed user from their `postRefs` sub-collection
+            for followedUsername in followingUsernames {
+                let userPostsRef = firestore.collection("users").document(followedUsername).collection("postRefs")
                 
-                guard let documents = querySnapshot?.documents else {
-                    print("PostUtility -    No posts found for followed users.")
-                    completion([])
-                    return
-                }
-                
-                for document in documents {
-                    do {
-                        if let post = try document.data(as: Post?.self) {
-                            posts.append(post)
-                        }
-                    } catch {
-                        print("PostUtility -    Error decoding post: \(error.localizedDescription)")
+                group.enter() // Start tracking an async task
+                userPostsRef.getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("PostUtility -    Error fetching posts for \(followedUsername): \(error.localizedDescription)")
+                        group.leave() // Finish tracking this task
+                        return
                     }
+                    
+                    guard let postRefs = querySnapshot?.documents else {
+                        print("PostUtility -    No posts found for \(followedUsername).")
+                        group.leave()
+                        return
+                    }
+                    
+                    // Fetch each post using its document ID
+                    for postRefDoc in postRefs {
+                        if let postID = postRefDoc.data()["postRef"] as? String {
+                            let postDocRef = firestore.collection("posts").document(postID)
+                            
+                            group.enter() // Start tracking another async task
+                            
+                            postDocRef.getDocument { (documentSnapshot, error) in
+                                if let error = error {
+                                    print("PostUtility -    Error fetching post document: \(error.localizedDescription)")
+                                } else if let documentSnapshot = documentSnapshot,
+                                          let post = try? documentSnapshot.data(as: Post.self) {
+                                    posts.append(post)
+                                }
+                                group.leave() // Finish tracking this task
+                            }
+                        }
+                    }
+                    group.leave() // Finish tracking the userPostsRef task
                 }
-                
-                // Sort posts by timestamp (convert Timestamp to Date)
+            }
+            
+            //  Wait for all tasks to complete and then sort posts by timestamp
+            group.notify(queue: .main) {
+                print("PostUtility - Post Scanning Completed")
                 let sortedPosts = posts.sorted {
-                    ($0.timeStamp.dateValue()) > ($1.timeStamp.dateValue())
+                    // Ensure your `Post` struct includes a timestamp field of type `Timestamp`
+                    $0.timeStamp.dateValue() > $1.timeStamp.dateValue()
                 }
-                
                 print("PostUtility - Successfully Found \(sortedPosts.count) posts")
-                // Return the sorted posts
                 completion(sortedPosts)
             }
         }
     }
+
 }

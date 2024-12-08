@@ -34,7 +34,6 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         title = "Sweat Social"
         
-        // HZ: This seems like a weird place to put the log out, maybe place it in the profile screen instead?
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Log Out",
             style: .plain,
@@ -67,22 +66,13 @@ class FeedViewController: UIViewController {
     }
     
     func fetchPosts() {
-        /* This is good for the Profile Screen!
-        FirebasePostUtil().getPostsByUser(username: "tester1") { [weak self] posts in
-            guard let self = self else { return }
-            self.posts = posts
-            print("Posts fetched: \(self.posts)")
-            
-            // Reload your UI if needed
-            self.posts = posts
-            feedView.tableViewPosts.reloadData() // Example for UITableView
-        }
-         */
-        
         print("FeedViewController - Fetching Posts for Feed")
+        
         FirebasePostUtil().getPostsFromFollowedUsers(username: (FirebaseUserUtil.currentUser?.displayName)!, completion: { posts in
             self.posts = posts
-            self.feedView.tableViewPosts.reloadData() // Example for UITableView
+            
+            print("FeedViewController - Posts: \(self.posts)")
+            self.feedView.tableViewPosts.reloadData()
         })
         
     }
@@ -122,15 +112,18 @@ class FeedViewController: UIViewController {
     @objc func toSearchScreen() {
         // TODO
         print("ToSearchScreen: Not Yet Implemented!")
+        print("") // spacer in logs
     }
     
     @objc func firebaseLogOut() {
         do {
             try Auth.auth().signOut()
             print("Sign Out Successful")
+            print("") // spacer in logs
             self.navigationController?.popViewController(animated: true)
         }catch{
             print("Couldn't sign out")
+            print("") // spacer in logs
         }
     }
 }
