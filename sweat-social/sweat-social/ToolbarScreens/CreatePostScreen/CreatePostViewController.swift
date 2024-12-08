@@ -47,8 +47,6 @@ class CreateViewController: UIViewController {
                     if success {
                         print("CreatePostViewController - Post Upload Successful!")
                         
-                        // probably want to reload data here!
-                        
                         self.navigationController?.popViewController(animated: true)
                         
                     } else {

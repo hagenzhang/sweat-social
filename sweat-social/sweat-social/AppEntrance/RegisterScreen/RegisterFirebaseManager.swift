@@ -125,9 +125,6 @@ extension RegisterViewController {
                 if error == nil {
                     print("RegisterFirebaseManager - Adding User to Firestore Successful")
                     
-                    // Automatically follow and get followed by "admin" (for testing purposes, we can remove this later)
-                    self.addAdminAsFollower(userUsername: user.username, adminUsername: "admin")
-                    
                     self.navigationController?.popViewController(animated: true)
                     print("") // spacer in logs
                     
@@ -139,12 +136,6 @@ extension RegisterViewController {
         } catch {
             print("RegisterFirebaseManager - EXCEPTION Adding User to Firestore!")
         }
-    }
-    
-    // Function for testing purposes.
-    func addAdminAsFollower(userUsername: String, adminUsername: String) {
-        FirebaseUserUtil().addFollowerToTarget(targetUsername: userUsername, followerUsername: adminUsername)
-        FirebaseUserUtil().addFollowerToTarget(targetUsername: adminUsername, followerUsername: userUsername)
     }
     
     func areInputsValid() -> Bool {

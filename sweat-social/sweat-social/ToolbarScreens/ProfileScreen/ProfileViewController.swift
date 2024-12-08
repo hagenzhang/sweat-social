@@ -82,19 +82,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("ProfileViewController - Clicked on a Cell @ indexPath \(indexPath)!")
         
+        let displayView = DisplayViewController()
+        
+        displayView.loadPostDetails(post: posts[indexPath.row])
+        
+        self.navigationController?.pushViewController(displayView, animated: true)
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        /*
-        let sendPost = Post(hours: posts[indexPath.row].hours,
-                            mins: posts[indexPath.row].mins,
-                            loc: posts[indexPath.row].loc,
-                            message: posts[indexPath.row].message,
-                            image: posts[indexPath.row].image)
-        let dvController = DisplayViewController()
-        dvController.receivedPost = sendPost
-        self.navigationController?.pushViewController(dvController, animated: true)
-        */
     }
 }
 

@@ -60,14 +60,15 @@ extension CreateViewController {
                             if error == nil {
                                 print("CreateFirebaseManager -     url = \(url!)")
                                 
-                                let post = Post(username: FirebaseUserUtil.currentUser!.displayName!,
+                                let post = Post(id: self.database.collection("posts").document().documentID, // generate a random ID
+                                                username: FirebaseUserUtil.currentUser!.displayName!,
                                                 hours: hours,
                                                 mins: mins,
                                                 loc: location,
                                                 caption: caption,
                                                 exercises: details,
-                                                imageRef: url!,
-                                                likes: []) // all posts start with 0 likes
+                                                imageRef: url!)
+                                
                                 completion(post)
                             } else {
                                 print("CreateFirebaseManager -    Error Getting downloadURL")

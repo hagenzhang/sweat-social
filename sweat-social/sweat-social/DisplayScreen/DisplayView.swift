@@ -10,19 +10,24 @@ class DisplayView: UIView {
     let scrollView = UIScrollView()
     let contentView = UIView()
     
+    let postImage: UIImageView! = UIImageView()
+    let caption: UILabel = UILabel()
+    
     let totalTimeLabel = UILabel()
     let totalTimeValueLabel = UILabel()
+    
     let locationLabel = UILabel()
     let locationValueLabel = UILabel()
+    
     let messageLabel = UILabel()
     let messageValueLabel = UILabel()
-    var avatarImg: UIImageView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupScrollView()
-        setupAvatarImg()
+        setupPostImage()
+        setupCaption()
         setupTotalTimeRow()
         setupLocationRow()
         setupMessageView()
@@ -36,17 +41,21 @@ class DisplayView: UIView {
         scrollView.addSubview(contentView)
     }
     
-    func setupAvatarImg() {
-        avatarImg = UIImageView()
-        avatarImg.contentMode = .scaleToFill
-        avatarImg.clipsToBounds = true
-        avatarImg.layer.cornerRadius = 10
-        avatarImg.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(avatarImg)
+    func setupPostImage() {
+        postImage.contentMode = .scaleToFill
+        postImage.clipsToBounds = true
+        postImage.layer.cornerRadius = 10
+        postImage.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(postImage)
+    }
+    
+    func setupCaption() {
+        caption.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(caption)
     }
 
     func setupTotalTimeRow() {
-        totalTimeLabel.text = "Total Time"
+        totalTimeLabel.text = "Total Time:"
         totalTimeLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         totalTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(totalTimeLabel)
@@ -58,7 +67,7 @@ class DisplayView: UIView {
     }
 
     func setupLocationRow() {
-        locationLabel.text = "Location"
+        locationLabel.text = "Location:"
         locationLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(locationLabel)
@@ -70,7 +79,7 @@ class DisplayView: UIView {
     }
 
     func setupMessageView() {
-        messageLabel.text = "Details"
+        messageLabel.text = "Details:"
         messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(messageLabel)
@@ -95,30 +104,33 @@ class DisplayView: UIView {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            avatarImg.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32),
-            avatarImg.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            avatarImg.heightAnchor.constraint(equalToConstant: 200),
-            avatarImg.widthAnchor.constraint(equalToConstant: 200),
+            postImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32),
+            postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            postImage.heightAnchor.constraint(equalToConstant: 300),
+            postImage.widthAnchor.constraint(equalToConstant: 300),
+            
+            caption.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 16),
+            caption.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
-            totalTimeLabel.topAnchor.constraint(equalTo: avatarImg.bottomAnchor, constant: 16),
+            totalTimeLabel.topAnchor.constraint(equalTo: caption.bottomAnchor, constant: 16),
             totalTimeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             totalTimeLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            totalTimeValueLabel.centerYAnchor.constraint(equalTo: totalTimeLabel.centerYAnchor),
-            totalTimeValueLabel.leadingAnchor.constraint(equalTo: totalTimeLabel.trailingAnchor, constant: 8),
-            totalTimeValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            
             locationLabel.topAnchor.constraint(equalTo: totalTimeLabel.bottomAnchor, constant: 16),
             locationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            locationLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            locationValueLabel.centerYAnchor.constraint(equalTo: locationLabel.centerYAnchor),
-            locationValueLabel.leadingAnchor.constraint(equalTo: locationLabel.trailingAnchor, constant: 8),
-            locationValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            locationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
             messageLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 16),
             messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             messageLabel.widthAnchor.constraint(equalToConstant: 100),
+
+            totalTimeValueLabel.centerYAnchor.constraint(equalTo: totalTimeLabel.centerYAnchor),
+            totalTimeValueLabel.leadingAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -70),
+            totalTimeValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            locationValueLabel.centerYAnchor.constraint(equalTo: locationLabel.centerYAnchor),
+            locationValueLabel.leadingAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -74),
+            locationValueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             messageValueLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
             messageValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

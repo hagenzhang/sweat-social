@@ -70,7 +70,7 @@ class PostTableViewCell: UITableViewCell {
     }
     
     func setupLikeSymbol() {
-        likedSymbol = UIImageView(image: UIImage(systemName: "heart.fill"))
+        likedSymbol = UIImageView(image: UIImage(systemName: "heart"))
         likedSymbol.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(likedSymbol)
     }

@@ -26,7 +26,12 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("FeedScreenTableViewExtension - Clicked on a Cell @ indexPath \(indexPath)!")
         
+        let displayView = DisplayViewController()
+        
+        displayView.loadPostDetails(post: posts[indexPath.row])
+        
+        self.navigationController?.pushViewController(displayView, animated: true)
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
 }

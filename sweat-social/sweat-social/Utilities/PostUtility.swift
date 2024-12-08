@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 
 struct Post: Codable {
+    var id: String
     var hours: String
     var mins: String
     var loc: String
@@ -20,13 +21,11 @@ struct Post: Codable {
     var imageRef: URL
     var timeStamp: Timestamp
     
-    var likes: [String] // Array of Strings, stores the usernames of the users who have liked the post
-    
-    init(username: String, hours: String, mins: String, 
-         loc: String, caption: String, exercises: String, 
-         imageRef: URL, timestamp: Timestamp = Timestamp(),
-         likes: [String]) {
+    init(id: String, username: String, hours: String, mins: String,
+         loc: String, caption: String, exercises: String,
+         imageRef: URL, timestamp: Timestamp = Timestamp()) {
         
+        self.id = id
         self.username = username
         self.hours = hours
         self.mins = mins
@@ -35,7 +34,6 @@ struct Post: Codable {
         self.imageRef = imageRef
         self.exercises = exercises
         self.timeStamp = timestamp
-        self.likes = likes
     }
 }
 
@@ -45,11 +43,11 @@ class FirebasePostUtil {
     func uploadPost(post: Post, completion: @escaping (Bool) -> Void) {
         print("PostUtility - Uploading Post: \(post) for User: \(post.username)")
         
-        let postsRef = database.collection("posts")
+        let postRef = database.collection("posts").document(post.id)
         let userPostsRef = database.collection("users").document(post.username).collection("postRefs")
         
         do {
-            let newPostRef = try postsRef.addDocument(from: post) { error in
+            try postRef.setData(from: post) { error in
                 if let error = error {
                     print("PostUtility -    Error uploading to Root Post Collection: \(error.localizedDescription)")
                     print("") // spacer in logs
@@ -59,7 +57,7 @@ class FirebasePostUtil {
             }
             
             // Add a reference to the post in the user's "posts" sub-collection
-            userPostsRef.document(newPostRef.documentID).setData(["postRef": newPostRef.documentID]) { error in
+            userPostsRef.document(post.id).setData(["postRef": post.id]) { error in
                 if let error = error {
                     print("PostUtility -    Error adding post reference to user's posts: \(error.localizedDescription)")
                     print("") // spacer in logs
