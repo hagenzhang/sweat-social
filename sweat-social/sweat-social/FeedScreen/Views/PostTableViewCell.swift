@@ -12,13 +12,14 @@ class PostTableViewCell: UITableViewCell {
     var profileImage: UIImageView!
     var nameLabel: UILabel!
     
+    // main image
+    var postImage: UIImageView!
+    
     // handles the caption section
     var likedSymbol: UIImageView!
     var caption: UILabel!
     
-
-    // temp objects TODO
-//    var tempRect: UIImageView!
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,6 +27,8 @@ class PostTableViewCell: UITableViewCell {
         setupWrapperCellView()
         setupProfileImage()
         setupNameLabel()
+        
+        setupPostImage()
         
         setupLikeSymbol()
         setupCaption()
@@ -56,7 +59,16 @@ class PostTableViewCell: UITableViewCell {
         wrapperCellView.addSubview(nameLabel)
     }
     
-    // func setupPostImage() { }
+    func setupPostImage() {
+        postImage = UIImageView()
+        postImage.contentMode = .scaleToFill
+        postImage.clipsToBounds = true
+        postImage.layer.cornerRadius = 10
+        postImage.translatesAutoresizingMaskIntoConstraints = false
+        wrapperCellView.addSubview(postImage)
+        
+    }
+    
     func setupLikeSymbol() {
         likedSymbol = UIImageView(image: UIImage(systemName: "heart.fill"))
         likedSymbol.translatesAutoresizingMaskIntoConstraints = false
@@ -88,13 +100,12 @@ class PostTableViewCell: UITableViewCell {
             nameLabel.topAnchor.constraint(equalTo: wrapperCellView.topAnchor, constant: 5),
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 5),
 
-//            // stand-in for where the post photo will go
-//            tempRect.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 5),
-//            tempRect.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor),
-//            tempRect.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor),
-//            tempRect.heightAnchor.constraint(equalToConstant: 100),
+            postImage.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 5),
+            postImage.centerXAnchor.constraint(equalTo: wrapperCellView.centerXAnchor),
+            postImage.widthAnchor.constraint(equalToConstant: 400),
+            postImage.heightAnchor.constraint(equalToConstant: 400),
             
-            likedSymbol.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
+            likedSymbol.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: 5),
             likedSymbol.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 5),
             likedSymbol.heightAnchor.constraint(equalToConstant: 20),
             
@@ -102,7 +113,7 @@ class PostTableViewCell: UITableViewCell {
             caption.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 5),
             caption.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor, constant: -5),
             
-            wrapperCellView.heightAnchor.constraint(equalToConstant: 200)
+            wrapperCellView.heightAnchor.constraint(equalToConstant: 500),
         ])
     }
     

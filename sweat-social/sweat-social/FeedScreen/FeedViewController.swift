@@ -27,7 +27,8 @@ class FeedViewController: UIViewController {
 
     override func loadView() {
         view = feedView
-        fetchPosts()
+        
+        globalFeedSelected()
     }
     
     override func viewDidLoad() {
@@ -63,10 +64,41 @@ class FeedViewController: UIViewController {
         feedView.tableViewPosts.dataSource = self
         
         feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
+        
+        feedView.globalFeedButton.addTarget(self, action: #selector(globalFeedSelected), for: .touchUpInside)
+        feedView.forYouFeedButton.addTarget(self, action: #selector(forYouFeedSelected), for: .touchUpInside)
     }
     
-    func fetchPosts() {
-        print("FeedViewController - Fetching Posts for Feed")
+    @objc func globalFeedSelected() {
+        fetchGlobalPosts()
+        
+        // showing which button is active
+        feedView.globalFeedButton.backgroundColor = .lightGray
+        feedView.forYouFeedButton.backgroundColor = .clear
+    }
+    
+    @objc func forYouFeedSelected() {
+        fetchForYouPosts()
+        
+        // showing which button is active
+        feedView.globalFeedButton.backgroundColor = .clear
+        feedView.forYouFeedButton.backgroundColor = .lightGray
+    }
+    
+    
+    func fetchGlobalPosts() {
+        print("FeedViewController - Fetching Posts for Global Feed")
+        
+        FirebasePostUtil().getGlobalPosts(completion: { posts in
+            self.posts = posts
+            
+            print("FeedViewController - Post Count: \(posts.count)")
+            self.feedView.tableViewPosts.reloadData()
+        })
+    }
+    
+    func fetchForYouPosts() {
+        print("FeedViewController - Fetching Posts for For You Feed")
         
         FirebasePostUtil().getPostsFromFollowedUsers(username: (FirebaseUserUtil.currentUser?.displayName)!, completion: { posts in
             self.posts = posts
@@ -74,7 +106,6 @@ class FeedViewController: UIViewController {
             print("FeedViewController - Posts: \(self.posts)")
             self.feedView.tableViewPosts.reloadData()
         })
-        
     }
     
     

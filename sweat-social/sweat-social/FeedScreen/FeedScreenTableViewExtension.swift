@@ -17,7 +17,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         
         cell.caption.text = posts[indexPath.row].exercises
         cell.nameLabel.text = posts[indexPath.row].username
-        
+        cell.postImage.loadRemoteImage(from: posts[indexPath.row].imageRef)
         
         return cell
     }

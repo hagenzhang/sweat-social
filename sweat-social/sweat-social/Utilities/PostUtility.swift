@@ -119,7 +119,7 @@ class FirebasePostUtil {
         let firestore = Firestore.firestore()
         var posts: [Post] = []
         let group = DispatchGroup() // To synchronize multiple async calls
-
+        
         // Fetching the list of users the current user is following
         let followingRef = firestore.collection("users").document(username).collection("following")
         
@@ -197,5 +197,35 @@ class FirebasePostUtil {
             }
         }
     }
-
+    
+    
+    func getGlobalPosts(completion: @escaping ([Post]) -> Void) {
+        let firestore = Firestore.firestore()
+        let postsRef = firestore.collection("posts")
+        
+        print("PostUtility - Fetching All Posts")
+        
+        // Use Firestore's order(by:) to sort by the "timeStamp" field
+        postsRef.order(by: "timeStamp", descending: true).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("PostUtility -    Error fetching all posts: \(error.localizedDescription)")
+                completion([])
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("PostUtility -    No posts found.")
+                completion([])
+                return
+            }
+            
+            // Map documents to Post objects
+            let posts: [Post] = documents.compactMap { try? $0.data(as: Post.self) }
+            
+            print("PostUtility - Successfully fetched \(posts.count) posts.")
+            completion(posts)
+        }
+        
+    }
+    
 }
