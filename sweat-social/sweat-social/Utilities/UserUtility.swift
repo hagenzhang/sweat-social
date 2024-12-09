@@ -144,6 +144,7 @@ class FirebaseUserUtil {
             print("FirebaseUserUtil - Found \(following.count) following for user: \(username)")
             completion(following)
         }
+    }
     
     // Retrieves all of the User Information in Firebase and Returns it as a Profile Struct.
     func getProfileInformation(username: String, completion: @escaping (Profile?) -> Void) {

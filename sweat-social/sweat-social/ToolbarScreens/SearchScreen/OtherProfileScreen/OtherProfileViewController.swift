@@ -35,12 +35,24 @@ class OtherProfileViewController: UIViewController {
         FirebaseUserUtil().addFollowerToTarget(targetUsername: self.otherUsername, followerUsername: (FirebaseUserUtil.currentUser?.displayName)!)
         
         print("Follow button tapped")
+        
+        otherProfileScreen.followButton.addTarget(self, action: #selector(onUnfollowButtonTapped), for: .touchUpInside)
+        otherProfileScreen.followButton.setTitle("Unfollow", for: .normal)
+        otherProfileScreen.followButton.backgroundColor = .systemRed
+    }
+    
+    @objc func onUnfollowButtonTapped() {
+        FirebaseUserUtil().removeFollowerFromTarget(targetUsername: self.otherUsername, followerUsername: (FirebaseUserUtil.currentUser?.displayName)!)
+        
+        print("Unfollow button tapped")
+        
+        otherProfileScreen.followButton.addTarget(self, action: #selector(onFollowButtonTapped), for: .touchUpInside)
+        otherProfileScreen.followButton.setTitle("Follow", for: .normal)
+        otherProfileScreen.followButton.backgroundColor = .systemBlue
     }
     
     // Assigns the ProfileView fields based on the given profile.
     func unpackProfile(receivedPackage: Profile) {
-        
-        
         self.profileViewUser = receivedPackage.user
         
         self.otherUsername = receivedPackage.user.username
@@ -59,10 +71,11 @@ class OtherProfileViewController: UIViewController {
         FirebaseUserUtil().getFollowing(username: (FirebaseUserUtil.currentUser?.displayName)!, completion: { followings in
             
             for following in followings {
-                print("Username " + following.username)
-                if (following.username == self.otherUsername) {
+                print("Username " + following)
+                if (following == self.otherUsername) {
                     self.otherProfileScreen.followButton.setTitle("Unfollow", for: .normal)
                     self.otherProfileScreen.followButton.backgroundColor = .systemRed
+                    self.otherProfileScreen.followButton.addTarget(self, action: #selector(self.onUnfollowButtonTapped), for: .touchUpInside)
                 }
             }
         })
