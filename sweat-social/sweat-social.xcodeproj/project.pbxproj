@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8CFF1F22D06821C00735C74 /* OtherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFF1F12D06821C00735C74 /* OtherProfileViewController.swift */; };
 		F3AD5C772D02E0D2009E634B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3AD5C762D02E0D2009E634B /* GoogleService-Info.plist */; };
 		F3BBEFE62D058A8A00FFBB98 /* SearchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBEFE52D058A8A00FFBB98 /* SearchScreenViewController.swift */; };
 		F3BBEFE92D058AA800FFBB98 /* SearchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBEFE82D058AA800FFBB98 /* SearchScreenView.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B8CFF1F12D06821C00735C74 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
 		F3AD5C762D02E0D2009E634B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F3BBEFE52D058A8A00FFBB98 /* SearchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenViewController.swift; sourceTree = "<group>"; };
 		F3BBEFE82D058AA800FFBB98 /* SearchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,10 @@
 		F3FF912F2D06678A003F6D5D /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B8CFF1EC2D0681F400735C74 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		F3F3D3252CFF88EE00A83C7F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -101,9 +107,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B8CFF1EB2D0681E400735C74 /* OtherProfileScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B8CFF1EC2D0681F400735C74 /* Views */,
+				B8CFF1F12D06821C00735C74 /* OtherProfileViewController.swift */,
+			);
+			path = OtherProfileScreen;
+			sourceTree = "<group>";
+		};
 		F3BBEFE42D058A7100FFBB98 /* SearchScreen */ = {
 			isa = PBXGroup;
 			children = (
+				B8CFF1EB2D0681E400735C74 /* OtherProfileScreen */,
 				F3BBEFE72D058A9200FFBB98 /* Views */,
 				F3BBEFE52D058A8A00FFBB98 /* SearchScreenViewController.swift */,
 			);
@@ -310,6 +326,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				B8CFF1EC2D0681F400735C74 /* Views */,
+			);
 			name = "sweat-social";
 			packageProductDependencies = (
 				F3F3D3482CFF8B1B00A83C7F /* FirebaseAuth */,
@@ -401,6 +420,7 @@
 				F3F3D36E2CFF8ED600A83C7F /* DisplayViewController.swift in Sources */,
 				F3F3D3632CFF8D4C00A83C7F /* CreatePostViewController.swift in Sources */,
 				F3DB2E0B2D03BBA900849FB5 /* ImageUtility.swift in Sources */,
+				B8CFF1F22D06821C00735C74 /* OtherProfileViewController.swift in Sources */,
 				F3FF912E2D06676E003F6D5D /* NotificationView.swift in Sources */,
 				F3F3D3662CFF8DF800A83C7F /* FeedViewController.swift in Sources */,
 				F3BBEFE62D058A8A00FFBB98 /* SearchScreenViewController.swift in Sources */,

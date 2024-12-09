@@ -70,13 +70,13 @@ extension SearchScreenViewController: UITableViewDelegate, UITableViewDataSource
             if let profile = profile {
                 print("SearchScreenViewController - Successful Profile Define: \(profile)")
                 
-                let profileViewController = ProfileViewController()
+                let otherProfileViewController = OtherProfileViewController()
                 
                 // Unpack all of the Profile Info so it renders in the View.
-                profileViewController.unpackProfile(receivedPackage: profile)
+                otherProfileViewController.unpackProfile(receivedPackage: profile)
                 
                 // Navigate to the ProfileView.
-                self.navigationController?.pushViewController(profileViewController, animated: true)
+                self.navigationController?.pushViewController(otherProfileViewController, animated: true)
                 
             } else {
                 print("SearchScreenViewController - Failed to Define Profile!")

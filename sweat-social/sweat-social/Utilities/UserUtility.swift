@@ -120,25 +120,24 @@ class FirebaseUserUtil {
     }
     
     // Function to get who a User is following.
-    func getFollowing(username: String) {
-        let userRef = database.collection("users").document(username)
-        
-        userRef.collection("following").getDocuments { snapshot, error in
-            if let error = error {
-                print("FirebaseUserUtil - Error retrieving following: \(error.localizedDescription)")
-            } else {
-                for document in snapshot?.documents ?? [] {
-                    if let ref = document.get("reference") as? DocumentReference {
-                        ref.getDocument { userDoc, error in
-                            if let userDoc = userDoc, userDoc.exists {
-                                print("FirebaseUserUtil - Following: \(userDoc.data() ?? [:])")
-                            }
-                        }
+    func getFollowing(username: String, completion: @escaping ([User]) -> Void) {
+            let userRef = database.collection("users").document(username)
+            
+            userRef.collection("following").getDocuments { snapshot, error in
+                if let error = error {
+                    print("FirebaseUserUtil - Error retrieving following: \(error.localizedDescription)")
+                } else {
+                    guard let documents = snapshot?.documents else {
+                        completion([])
+                        return
                     }
+                    
+                    let users: [User] = documents.compactMap { try? $0.data(as: User.self) }
+                    print("Following - " + String(users.count))
+                    completion(users)
                 }
             }
         }
-    }
     
     // Retrieves all of the User Information in Firebase and Returns it as a Profile Struct.
     func getProfileInformation(username: String, completion: @escaping (Profile?) -> Void) {
