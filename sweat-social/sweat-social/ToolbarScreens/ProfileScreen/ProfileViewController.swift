@@ -24,12 +24,35 @@ class ProfileViewController: UIViewController {
         
         profileScreen.tableViewPosts.delegate = self
         profileScreen.tableViewPosts.dataSource = self
+        
+        let feed = UIBarButtonItem(image: UIImage(systemName: "dumbbell")?.withConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        ), style: .plain, target: self, action: #selector(toFeedScreen))
+        let create = UIBarButtonItem(image: UIImage(systemName: "plus.circle.fill")?.withConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        ), style: .plain, target: self, action: #selector(createPost))
+        let profile = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill")?.withConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        ), style: .plain, target: self,  action: nil)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        profileScreen.toolbar.items = [feed, flexibleSpace, create, flexibleSpace, profile]
+    }
+    
+    @objc func toFeedScreen() {
+        print("")
+        let feedController = FeedViewController()
+        navigationController?.pushViewController(feedController, animated: true)
+    }
+    
+    @objc func createPost() {
+        print("") // spacer in logs
+        let createViewController = CreateViewController()
+        self.navigationController?.pushViewController(createViewController, animated: true)
     }
     
     
     // Assigns the ProfileView fields based on the given profile.
     func unpackProfile(receivedPackage: Profile) {
-        
         self.profileViewUser = receivedPackage.user
         
         let username = receivedPackage.user.username

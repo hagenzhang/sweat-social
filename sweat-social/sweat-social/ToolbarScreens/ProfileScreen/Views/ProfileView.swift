@@ -14,6 +14,8 @@ class ProfileView: UIView {
     var avatarImg: UIImageView!
     var separatorLine: UIView!
     var tableViewPosts: UITableView!
+    
+    var toolbar:UIToolbar!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,8 +30,15 @@ class ProfileView: UIView {
         setupAvatarImg()
         setupSeparatorLine()
         setupTableViewPosts()
+        setupToolbar()
         
         initConstraints()
+    }
+    
+    func setupToolbar(){
+        toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.safeAreaLayoutGuide.widthAnchor.hashValue, height: 50))
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(toolbar)
     }
     func setupAvatarImg() {
         avatarImg = UIImageView()
@@ -67,14 +76,12 @@ class ProfileView: UIView {
         labelFollowers.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(labelFollowers)
     }
-    
     func setupSeparatorLine() {
         separatorLine = UIView()
         separatorLine.backgroundColor = .lightGray
         separatorLine.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(separatorLine)
     }
-    
     func setupTableViewPosts(){
         tableViewPosts = UITableView()
         tableViewPosts.register(ProfileCellView.self, forCellReuseIdentifier: "postTable")
@@ -116,6 +123,10 @@ class ProfileView: UIView {
             tableViewPosts.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             tableViewPosts.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableViewPosts.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            toolbar.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            toolbar.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
         ])
     }
     

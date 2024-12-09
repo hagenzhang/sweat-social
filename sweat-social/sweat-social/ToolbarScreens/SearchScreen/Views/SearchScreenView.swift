@@ -10,6 +10,7 @@ class SearchScreenView: UIView {
     var queryString: UITextField!
     var queryButton: UIButton!
     var queryResultsTable: UITableView!
+    var toolbar:UIToolbar!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,7 +20,14 @@ class SearchScreenView: UIView {
         setupQueryString()
         setupQueryButton()
         setupQueryResultTable()
+        setupToolbar()
         initConstraints()
+    }
+    
+    func setupToolbar(){
+        toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.safeAreaLayoutGuide.widthAnchor.hashValue, height: 50))
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(toolbar)
     }
     
     func setupQueryString() {
@@ -59,7 +67,11 @@ class SearchScreenView: UIView {
             queryResultsTable.topAnchor.constraint(equalTo: queryString.bottomAnchor, constant: 16),
             queryResultsTable.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 32),
             queryResultsTable.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32),
-            queryResultsTable.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            queryResultsTable.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            
+            toolbar.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            toolbar.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
         ])
     }
     
