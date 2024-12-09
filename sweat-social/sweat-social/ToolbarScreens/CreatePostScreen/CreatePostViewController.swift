@@ -38,6 +38,46 @@ class CreateViewController: UIViewController {
         )
         
         createView.selectPic.menu = getMenuImagePicker()
+        
+        let feed = UIBarButtonItem(image: UIImage(systemName: "dumbbell")?.withConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        ), style: .plain, target: self, action: #selector(toFeedScreen))
+        let create = UIBarButtonItem(image: UIImage(systemName: "plus.circle.fill")?.withConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        ), style: .plain, target: self, action: nil)
+        let profile = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill")?.withConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        ), style: .plain, target: self,  action: #selector(toProfileScreen))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        createView.toolbar.items = [feed, flexibleSpace, create, flexibleSpace, profile]
+    }
+    
+    @objc func toFeedScreen() {
+        print("")
+        let feedViewController = FeedViewController()
+        navigationController?.pushViewController(feedViewController, animated: true)
+    }
+    
+    @objc func toProfileScreen() {
+        FirebaseUserUtil().getProfileInformation(username: (FirebaseUserUtil.currentUser?.displayName)! , completion: { profile in
+            print("FeedViewController - Going to Profile Screen")
+            
+            if let profile = profile {
+                print("FeedViewController - Successful Profile Define: \(profile)")
+                
+                let profileViewController = ProfileViewController()
+                
+                // Unpack all of the Profile Info so it renders in the View.
+                profileViewController.unpackProfile(receivedPackage: profile)
+                
+                // Navigate to the ProfileView.
+                self.navigationController?.pushViewController(profileViewController, animated: true)
+                print("") // spacer in logs
+                
+            } else {
+                print("FeedViewController - Failed to Define Profile!")
+            }
+        })
     }
     
     @objc func savePost() {

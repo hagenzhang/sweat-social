@@ -19,6 +19,8 @@ class CreateView: UIView, UITextViewDelegate {
     
     let captionLabel = UILabel()
     let captionTextField = UITextField()
+    
+    var toolbar:UIToolbar!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,9 +29,16 @@ class CreateView: UIView, UITextViewDelegate {
         setupLocationRow()
         setupCaptionRow()
         setupCreateTextView()
+        setupToolbar()
         initConstraints()
     }
 
+    func setupToolbar(){
+        toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.safeAreaLayoutGuide.widthAnchor.hashValue, height: 50))
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(toolbar)
+    }
+    
     func setupSelectPic(){
         selectPic.setImage(UIImage(systemName: "camera.fill"), for: .normal)
         selectPic.contentHorizontalAlignment = .fill
@@ -131,10 +140,14 @@ class CreateView: UIView, UITextViewDelegate {
             captionTextField.leadingAnchor.constraint(equalTo: captionLabel.trailingAnchor, constant: 8),
             captionTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
+            toolbar.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            toolbar.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            
             createView.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 16),
             createView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             createView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            createView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -32)
+            createView.bottomAnchor.constraint(equalTo: toolbar.topAnchor),
         ])
     }
     

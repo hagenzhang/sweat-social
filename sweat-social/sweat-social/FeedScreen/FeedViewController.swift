@@ -51,7 +51,13 @@ class FeedViewController: UIViewController {
             action: #selector(toSearchScreen)
         )
         
-        let notifs = UIBarButtonItem(image: UIImage(systemName: "app.badge.fill")?.withConfiguration(
+        feedView.tableViewPosts.delegate = self
+        feedView.tableViewPosts.dataSource = self
+        
+        feedView.globalFeedButton.addTarget(self, action: #selector(globalFeedSelected), for: .touchUpInside)
+        feedView.forYouFeedButton.addTarget(self, action: #selector(forYouFeedSelected), for: .touchUpInside)
+        
+        let feed = UIBarButtonItem(image: UIImage(systemName: "dumbbell")?.withConfiguration(
             UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
         ), style: .plain, target: self, action: nil)
         let create = UIBarButtonItem(image: UIImage(systemName: "plus.circle.fill")?.withConfiguration(
@@ -61,13 +67,7 @@ class FeedViewController: UIViewController {
             UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
         ), style: .plain, target: self,  action: #selector(toProfileScreen))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        feedView.tableViewPosts.delegate = self
-        feedView.tableViewPosts.dataSource = self
-        feedView.toolbar.items = [notifs, flexibleSpace, create, flexibleSpace, profile]
-        
-        feedView.globalFeedButton.addTarget(self, action: #selector(globalFeedSelected), for: .touchUpInside)
-        feedView.forYouFeedButton.addTarget(self, action: #selector(forYouFeedSelected), for: .touchUpInside)
+        feedView.toolbar.items = [feed, flexibleSpace, create, flexibleSpace, profile]
     }
     
     @objc func globalFeedSelected() {
@@ -111,6 +111,10 @@ class FeedViewController: UIViewController {
         })
     }
     
+    
+    @objc func toFeedScreen() {
+        // do nothing here
+    }
     
     @objc func toProfileScreen() {
         FirebaseUserUtil().getProfileInformation(username: (FirebaseUserUtil.currentUser?.displayName)! , completion: { profile in

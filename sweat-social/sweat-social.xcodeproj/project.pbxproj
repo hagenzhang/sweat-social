@@ -42,9 +42,6 @@
 		F3F3D37E2CFFE26300A83C7F /* PostUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D37D2CFFE26300A83C7F /* PostUtility.swift */; };
 		F3F3D3802CFFE80400A83C7F /* FeedScreenTableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D37F2CFFE80400A83C7F /* FeedScreenTableViewExtension.swift */; };
 		F3F3D3822CFFE8E900A83C7F /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F3D3812CFFE8E900A83C7F /* PostTableViewCell.swift */; };
-		F3FF912C2D06675A003F6D5D /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FF912B2D06675A003F6D5D /* NotificationViewController.swift */; };
-		F3FF912E2D06676E003F6D5D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FF912D2D06676E003F6D5D /* NotificationView.swift */; };
-		F3FF91302D06678A003F6D5D /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FF912F2D06678A003F6D5D /* NotificationTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,9 +78,6 @@
 		F3F3D37D2CFFE26300A83C7F /* PostUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUtility.swift; sourceTree = "<group>"; };
 		F3F3D37F2CFFE80400A83C7F /* FeedScreenTableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedScreenTableViewExtension.swift; sourceTree = "<group>"; };
 		F3F3D3812CFFE8E900A83C7F /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
-		F3FF912B2D06675A003F6D5D /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		F3FF912D2D06676E003F6D5D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		F3FF912F2D06678A003F6D5D /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,15 +111,6 @@
 				F3BBEFEA2D058EAF00FFBB98 /* SearchTableViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		F3BBEFED2D0596A300FFBB98 /* NotificationScreen */ = {
-			isa = PBXGroup;
-			children = (
-				F3FF912A2D066744003F6D5D /* Views */,
-				F3FF912B2D06675A003F6D5D /* NotificationViewController.swift */,
-			);
-			path = NotificationScreen;
 			sourceTree = "<group>";
 		};
 		F3DB2E072D036E0500849FB5 /* Views */ = {
@@ -278,21 +263,11 @@
 		F3F3D3702CFF8F2B00A83C7F /* ToolbarScreens */ = {
 			isa = PBXGroup;
 			children = (
-				F3BBEFED2D0596A300FFBB98 /* NotificationScreen */,
 				F3BBEFE42D058A7100FFBB98 /* SearchScreen */,
 				F3F3D36F2CFF8F0700A83C7F /* ProfileScreen */,
 				F3F3D35F2CFF8D0700A83C7F /* CreatePostScreen */,
 			);
 			path = ToolbarScreens;
-			sourceTree = "<group>";
-		};
-		F3FF912A2D066744003F6D5D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				F3FF912D2D06676E003F6D5D /* NotificationView.swift */,
-				F3FF912F2D06678A003F6D5D /* NotificationTableViewCell.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,12 +357,10 @@
 				F3F3D3302CFF88EE00A83C7F /* ViewController.swift in Sources */,
 				F3F3D36C2CFF8EB700A83C7F /* DisplayView.swift in Sources */,
 				F3F3D3582CFF8C3F00A83C7F /* RegisterFirebaseManager.swift in Sources */,
-				F3FF91302D06678A003F6D5D /* NotificationTableViewCell.swift in Sources */,
 				F3F3D3462CFF8A7300A83C7F /* LoginFirebaseManager.swift in Sources */,
 				F3F3D3562CFF8C0E00A83C7F /* RegisterViewController.swift in Sources */,
 				F3F3D3722CFF8FB500A83C7F /* ProfileViewController.swift in Sources */,
 				F3BBEFEB2D058EAF00FFBB98 /* SearchTableViewCell.swift in Sources */,
-				F3FF912C2D06675A003F6D5D /* NotificationViewController.swift in Sources */,
 				F3F3D32C2CFF88EE00A83C7F /* AppDelegate.swift in Sources */,
 				F3DB2E092D03B0B800849FB5 /* CreateFirebaseManager.swift in Sources */,
 				F3F3D3542CFF8BE400A83C7F /* RegisterView.swift in Sources */,
@@ -401,7 +374,6 @@
 				F3F3D36E2CFF8ED600A83C7F /* DisplayViewController.swift in Sources */,
 				F3F3D3632CFF8D4C00A83C7F /* CreatePostViewController.swift in Sources */,
 				F3DB2E0B2D03BBA900849FB5 /* ImageUtility.swift in Sources */,
-				F3FF912E2D06676E003F6D5D /* NotificationView.swift in Sources */,
 				F3F3D3662CFF8DF800A83C7F /* FeedViewController.swift in Sources */,
 				F3BBEFE62D058A8A00FFBB98 /* SearchScreenViewController.swift in Sources */,
 				F3F3D3782CFF995B00A83C7F /* PhotoManager.swift in Sources */,
