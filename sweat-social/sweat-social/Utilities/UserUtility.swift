@@ -141,7 +141,7 @@ class FirebaseUserUtil {
             
             let following = documents.map { $0.documentID }
             
-            print("FirebaseUserUtil - Found \(following.count) followers for user: \(username)")
+            print("FirebaseUserUtil - Found \(following.count) following for user: \(username)")
             completion(following)
         }
     }
