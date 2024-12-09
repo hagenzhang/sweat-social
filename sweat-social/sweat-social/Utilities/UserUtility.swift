@@ -13,10 +13,9 @@ class FirebaseUserUtil {
     let storage = Storage.storage()
     let database = Firestore.firestore()
     
-    
-    
     // Returns a list of usernames in Firebase that matches the search query.
     func findUsersFromQuery(query: String, completion: @escaping (([User]) -> Void)) {
+        let currentUsername = FirebaseUserUtil.currentUser!.displayName!
         let usersRef = database.collection("users")
         
         print("UserUtility - Search for users with query: \(query)")
@@ -40,7 +39,8 @@ class FirebaseUserUtil {
                 }
                 
                 // Decode the users into User objects
-                let users = documents.compactMap { try? $0.data(as: User.self) }
+                let users = documents.compactMap { try? $0.data(as: User.self) }.filter { $0.username != currentUsername }
+                
                 print("UserUtility - Found \(users.count) users matching query '\(query)'")
                 completion(users)
             }
