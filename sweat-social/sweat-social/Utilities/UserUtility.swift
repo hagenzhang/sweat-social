@@ -19,7 +19,7 @@ class FirebaseUserUtil {
         let usersRef = database.collection("users")
         
         print("UserUtility - Search for users with query: \(query)")
-              
+        
         // Perform a query to fetch users whose usernames start with the search query
         let searchEnd = query + "\u{f8ff}"
         usersRef
@@ -99,44 +99,50 @@ class FirebaseUserUtil {
     }
     
     // Function to get a User's followers.
-    func getFollowers(username: String) {
-        let userRef = database.collection("users").document(username)
+    func getFollowers(username: String, completion: @escaping ([String]) -> Void) {
+        let followersRef = database.collection("users").document(username).collection("followers")
         
-        userRef.collection("followers").getDocuments { snapshot, error in
+        followersRef.getDocuments { snapshot, error in
             if let error = error {
-                print("FirebaseUserUtil - Error retrieving followers: \(error.localizedDescription)")
-            } else {
-                for document in snapshot?.documents ?? [] {
-                    if let ref = document.get("reference") as? DocumentReference {
-                        ref.getDocument { userDoc, error in
-                            if let userDoc = userDoc, userDoc.exists {
-                                print("FirebaseUserUtil - Follower: \(userDoc.data() ?? [:])")
-                            }
-                        }
-                    }
-                }
+                print("FirebaseUserUtil - Error fetching followers: \(error.localizedDescription)")
+                completion([])
+                return
             }
+            
+            guard let documents = snapshot?.documents else {
+                print("FirebaseUserUtil - No followers found for user: \(username)")
+                completion([])
+                return
+            }
+            
+            let followers = documents.map { $0.documentID }
+            
+            print("FirebaseUserUtil - Found \(followers.count) followers for user: \(username)")
+            completion(followers)
         }
     }
     
     // Function to get who a User is following.
-    func getFollowing(username: String) {
-        let userRef = database.collection("users").document(username)
+    func getFollowing(username: String, completion: @escaping ([String]) -> Void) {
+        let followingRef = database.collection("users").document(username).collection("following")
         
-        userRef.collection("following").getDocuments { snapshot, error in
+        followingRef.getDocuments { snapshot, error in
             if let error = error {
-                print("FirebaseUserUtil - Error retrieving following: \(error.localizedDescription)")
-            } else {
-                for document in snapshot?.documents ?? [] {
-                    if let ref = document.get("reference") as? DocumentReference {
-                        ref.getDocument { userDoc, error in
-                            if let userDoc = userDoc, userDoc.exists {
-                                print("FirebaseUserUtil - Following: \(userDoc.data() ?? [:])")
-                            }
-                        }
-                    }
-                }
+                print("FirebaseUserUtil - Error fetching following: \(error.localizedDescription)")
+                completion([])
+                return
             }
+            
+            guard let documents = snapshot?.documents else {
+                print("FirebaseUserUtil - No following found for user: \(username)")
+                completion([])
+                return
+            }
+            
+            let following = documents.map { $0.documentID }
+            
+            print("FirebaseUserUtil - Found \(following.count) followers for user: \(username)")
+            completion(following)
         }
     }
     
@@ -155,8 +161,8 @@ class FirebaseUserUtil {
                     let username = data["username"] as? String
                     
                     // Retrieve followers and following
-                    self.fetchSubCollection(userRef: userRef, subCollection: "followers") { followers in
-                        self.fetchSubCollection(userRef: userRef, subCollection: "following") { following in
+                    self.getFollowers(username: username!, completion: { followers in
+                        self.getFollowing(username: username!, completion: { following in
                             
                             // Retrieve profile photo info
                             if let photoURLString = data["photoURL"] as? String,
@@ -177,8 +183,8 @@ class FirebaseUserUtil {
                                 
                                 completion(profile)
                             }
-                        }
-                    }
+                        })
+                    })
                 } else {
                     print("FirebaseUserUtil - Error in User Document: \(String(describing: document))")
                     print("") // spacer in logs
@@ -191,20 +197,6 @@ class FirebaseUserUtil {
                 completion(nil)
                 return
             }
-        }
-    }
-    
-    private func fetchSubCollection(userRef: DocumentReference, subCollection: String, completion: @escaping ([String]) -> Void) {
-        userRef.collection(subCollection).getDocuments { snapshot, error in
-            if let error = error {
-                print("FirebaseUserUtil - Error fetching \(subCollection): \(error.localizedDescription)")
-                print("") // spacer in logs
-                completion([])
-                return
-            }
-            
-            let ids = snapshot?.documents.map { $0.documentID } ?? []
-            completion(ids)
         }
     }
 }

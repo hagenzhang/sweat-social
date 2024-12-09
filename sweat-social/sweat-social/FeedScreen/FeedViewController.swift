@@ -57,6 +57,8 @@ class FeedViewController: UIViewController {
         feedView.globalFeedButton.addTarget(self, action: #selector(globalFeedSelected), for: .touchUpInside)
         feedView.forYouFeedButton.addTarget(self, action: #selector(forYouFeedSelected), for: .touchUpInside)
         
+        FirebaseUserUtil().getFollowing(username: FirebaseUserUtil.currentUser!.displayName!, completion: { _ in })
+        
         let feed = UIBarButtonItem(image: UIImage(systemName: "dumbbell")?.withConfiguration(
             UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
         ), style: .plain, target: self, action: nil)
